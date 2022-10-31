@@ -1,0 +1,33 @@
+<%= form_with(model: @user, local: true) do |f| %>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <div class="d-flex flex-column">
+                    <%= f.label :first_name %>
+                    <%= f.text_field :first_name, placeholder: "First Name", class: "form-control" %>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <div class="d-flex flex-column">
+                    <%= f.label :last_name %>
+                    <%= f.text_field :last_name, placeholder: "Last Name", class: "form-control" %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :email %>
+        <%= f.email_field :email, placeholder: "Email address", class: "form-control" %>
+    </div>
+    <div class="form-group">
+        <%= f.label :contact_number %>
+        <%= f.number_field :contact_number, class: "form-control", placeholder: "Contact number" %>
+    </div>
+    <div class="form-group">
+        <%= f.label :password %>
+        <%= f.password_field :password, class: "form-control", placeholder: "Password" %>
+    </div>
+    <%= f.submit(@user.new_record? ? "Sign up" : "Update user", class: "btn btn-success m-auto") %>
+<% end %>

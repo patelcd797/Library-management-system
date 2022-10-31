@@ -1,0 +1,85 @@
+@import 'bootstrap/dist/css/bootstrap';
+
+img {
+  background-image: asset-url('ima.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.navbar-collapse {
+  flex-grow: 0;
+}
+
+.navbar-title a {
+  color: #fff;
+}
+
+.flickr_pagination {
+  text-align: center;
+  padding: 0.3em;
+  cursor: default; 
+}
+.flickr_pagination .disabled {
+  color: #aaaaaa !important; }
+.flickr_pagination .current {
+  font-style: normal;
+  font-weight: bold;
+  z-index: 1;
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+.flickr_pagination a, em {
+  text-decoration: none;
+  display: block;
+  padding: 0.5rem 0.75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: #007bff;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+.flickr_pagination a:hover, .flickr_pagination a:focus {
+  background: whitesmoke;
+  color: gray; 
+}
+.flickr_pagination .page_info {
+  color: #aaaaaa;
+  padding-top: 0.8em; 
+}
+.flickr_pagination .previous_page, .flickr_pagination .next_page {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: #007bff;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+.flickr_pagination .previous_page {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.flickr_pagination .next_page {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.card {
+  height: 200px;
+}
+
+.rounded-right-0 {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.rounded-left-0 {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.search-input {
+  outline: none;
+}

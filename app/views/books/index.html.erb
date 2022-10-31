@@ -1,0 +1,13 @@
+<div class="container py-5 ">
+    <div class="card h-100">
+        <%= render 'books/search_form' %>
+        <div id="search-books">
+            <%= render 'books/books_result' %>
+        </div>
+        <div class="flickr_pagination d-flex justify-content-center">
+                <%= will_paginate @bookss, :container => false %>
+        </div>
+    </div>
+</div>
+
+

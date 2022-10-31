@@ -1,0 +1,23 @@
+<div class="container py-5 ">
+    <div class="card h-100">
+        <h1 class="my-3 text-capitalize px-3"><%= @book.title %></h1>
+        <div class="d-flex">
+            <%= image_tag(@book.image, :alt => "rss feed", :class => "card-img-top w-25") %>
+            <div class="card-body">
+                <p class="card-text mb-1"><%= @book.description%></p>
+                <p class="card-text mb-1">Author: <%= @book.author%></p>
+                <p class="card-text mb-1">Price: <%= @book.price %></p>
+                <p class="card-text mb-1">No of Books: <%= @book.no_of_books %> / Available: <%= @book.no_of_books_available %> </p>
+                <a href="#" class="btn btn-primary text-nowrap">Go somewhere</a>
+            </div>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Book check out users</h5>
+            <p class="card-text mb-1"><%= @book.description%></p>
+            <p class="card-text mb-1">Author: <%= @book.author%></p>
+            <p class="card-text mb-1">Price: <%= @book.price %></p>
+            <p class="card-text mb-1">No of Books: <%= @book.no_of_books %> / Available: <%= @book.no_of_books_available %> </p>
+            <a href="#" class="btn btn-primary text-nowrap">Go somewhere</a>
+        </div>
+    </div>
+</div>

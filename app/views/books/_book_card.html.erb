@@ -1,0 +1,15 @@
+<div class="card flex-row justify-content-start m-2">
+  <%= image_tag(book.image, :alt => "rss feed", :class => "card-img-top w-25") %>
+  <div class="card-body">
+    <h5 class="card-title"><%= book.title %></h5>
+    <p class="card-text mb-1"><%= book.description%></p>
+    <p class="card-text mb-1">Author: <%= book.author%></p>
+    <p class="card-text mb-1">Price: <%= book.price %></p>
+    <p class="card-text mb-1">
+      <%= link_to "View details", book, class: "btn btn-success text-nowrap" %>
+      <% if current_user.admin? %>
+        <%= link_to "Edit details", edit_book_path(book), class: "btn btn-success text-nowrap" %>
+      <% end %>
+    </p>
+  </div>
+</div>
