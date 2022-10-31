@@ -19,11 +19,7 @@ class BooksController < ApplicationController
     def search 
         search = params[:search][:search]
         search.strip!
-        if search.empty?
-            @books = Book.all
-        else 
-            @books = Book.search(search)
-        end
+        @books = Book.search(search).paginate(page: params[:page], per_page: 3)
         
         respond_to do |format|
             format.js { render 'books/results'}
@@ -44,13 +40,26 @@ class BooksController < ApplicationController
     end
 
     def update
-        @book.no_of_books_available = params[:book][:no_of_books] 
+        # number of books update 
+        if @book.no_of_books != params[:book][:no_of_books]
+            no_of_books_checkout = @book.no_of_books - @book.no_of_books_available 
+            updated_no_of_books = params[:book][:no_of_books].to_i
+
+            if no_of_books_checkout > updated_no_of_books
+                flash[:alert] = "You can't make the no of books less #{no_of_books_checkout}"
+                redirect_to edit_book_path
+                return
+            end
+            
+            @book.no_of_books_available = updated_no_of_books - no_of_books_checkout
+        end
+
         if @book.update(book_param)
             flash[:notice] = "Book information updated successfully!"
-            redirect_to books_path
+            redirect_to @book
         else
             flash[:alert] = "Some error occured. please try again"
-            render 'books/edit'
+            redirect_to edit_book_path
         end
     end
     private 

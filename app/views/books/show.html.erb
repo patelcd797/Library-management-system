@@ -8,7 +8,9 @@
                 <p class="card-text mb-1">Author: <%= @book.author%></p>
                 <p class="card-text mb-1">Price: <%= @book.price %></p>
                 <p class="card-text mb-1">No of Books: <%= @book.no_of_books %> / Available: <%= @book.no_of_books_available %> </p>
-                <a href="#" class="btn btn-primary text-nowrap">Go somewhere</a>
+                <% if current_user.admin? %>
+                    <%= link_to "Edit details", edit_book_path(@book), class: "btn btn-success text-nowrap" %>
+                <% end %>
             </div>
         </div>
         <div class="card-body">
