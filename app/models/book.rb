@@ -6,6 +6,9 @@ class Book < ApplicationRecord
     validates :price, presence: true
     has_one_attached :image, :dependent => :destroy
 
+    has_many :checkout_book
+    has_many :users, through: :checkout_book
+
     def self.search(param)
         if param
             result = where("title like ? OR description like ? OR author like ?", "%#{param}%","%#{param}%","%#{param}%")

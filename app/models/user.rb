@@ -8,6 +8,9 @@ class User < ApplicationRecord
     validates :contact_number, presence: true, uniqueness: true, length: {minimum: 10, maximum: 12}
     has_secure_password
 
+    has_many :checkout_book
+    has_many :books, through: :checkout_book
+
     def full_name
         return "#{first_name} #{last_name}" if self.first_name || self.last_name
         "Anonymous"
