@@ -1,9 +1,21 @@
 class UsersController < ApplicationController
-    before_action :required_login
-    before_action :set_user, only: [:edit, :show, :update]
+    before_action :required_login, except: [:new, :create]
+    before_action :set_user, only: [:edit, :show, :update, :destroy]
     before_action :same_user, only: [:edit, :update]
+    before_action :requires_same_user_or_admin, only: [:destroy]
+    before_action :borrowed_book?, only: [:destroy]
 
     def show
+        @borrowed_books = []
+        @user.books.each { |book|
+            checkout_book = CheckoutBook.find_by(user_id: @user.id, book_id: book.id) 
+            puts checkout_book
+            borrow_book = { title: book.title, 
+                            checkout_date: checkout_book.checkout_date, 
+                            return_date: checkout_book.return_date
+                        }
+            @borrowed_books.push(borrow_book)
+        }
     end
 
     def new
@@ -11,7 +23,11 @@ class UsersController < ApplicationController
     end
 
     def edit 
-    end 
+    end
+
+    def checkout
+        @books = current_user.books.paginate(page: params[:page], per_page: 3)
+    end
 
     def create
         @user  = User.new(user_param)
@@ -61,11 +77,15 @@ class UsersController < ApplicationController
         end
     end
 
+    def destroy
+        session[:user_id] = nil
+        @user.destroy
+        redirect_to login_path 
+    end
+
     private 
     def user_param
-        p = params.require(:user).permit(:first_name, :last_name, :email, :password, :contact_number)
-        puts p 
-        p
+        params.require(:user).permit(:first_name, :last_name, :email, :password, :contact_number)
     end
 
     def set_user
@@ -85,5 +105,18 @@ class UsersController < ApplicationController
             flash[:alert] = "You can't perfome this operation. please login and try again"
             redirect_to login_path
         end
+    end
+
+    def borrowed_book? 
+        if @user.books.any?
+            flash[:alert] = "Return all the borrowed books"
+            redirect_to books_path
+        end
+    end
+    def requires_same_user_or_admin
+        if !current_user.admin? || current_user != @user
+            flash[:alert] = "You can't perfome this operation. please login and try again"
+            redirect_to request.referrer
+        end 
     end
 end

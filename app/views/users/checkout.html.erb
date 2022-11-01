@@ -1,0 +1,8 @@
+<div class="container py-5 ">
+    <% if @books.any? %>
+        <h1 class="my-3 text-capitalize px-3">Your Checkout Books</h1>
+        <%= render 'books/books_result' %>
+    <% else %>
+        <%=  render 'users/empty_checkout_page' %> 
+    <% end %>
+</div>

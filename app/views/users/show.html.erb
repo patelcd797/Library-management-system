@@ -7,9 +7,12 @@
             <div class="my-1"> <i class="fa-solid fa-square-phone"></i> <%= @user.contact_number.to_s %></div>
         </div>
     </div>
-    <div class="d-flex flex-column my-2">
-        <h5>Check-out books</h5>
-    </div>
+    <% if @user.books.any? %>
+        <div class="d-flex flex-column my-2">
+            <h5>Check-out books</h5>
+            <%= render 'users/borrowed_books' %>
+        </div>
+    <% end %>
     <div class="d-flex flex-column my-2">
         <h5>Wish list books</h5>
     </div>

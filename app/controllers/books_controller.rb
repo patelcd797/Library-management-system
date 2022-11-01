@@ -14,6 +14,16 @@ class BooksController < ApplicationController
     end
 
     def show
+        @borrowed_users = []
+        @book.users.each { |user|
+            checkout_book = CheckoutBook.find_by(user_id: user.id, book_id: @book.id) 
+            puts checkout_book
+            borrow_user = { first_name: user.first_name, last_name: user.last_name, 
+                            checkout_date: checkout_book.checkout_date, 
+                            return_date: checkout_book.return_date
+                        }
+            @borrowed_users.push(borrow_user)
+        }
     end
 
     def search 
@@ -62,6 +72,18 @@ class BooksController < ApplicationController
             redirect_to edit_book_path
         end
     end
+
+    def destroy
+        book = Book.find(params[:id])
+        if book.no_of_books == book.no_of_books_available
+            book.destroy
+            flash[:notice] = "Book successfully removed"
+            redirect_to books_path
+        else
+            flash[:alert] = "Currently some users borrowed this book. remove aafter all the books available"
+            redirect_to request.referrer
+        end
+    end 
     private 
 
     def set_book

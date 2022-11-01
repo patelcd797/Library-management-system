@@ -1,12 +1,8 @@
 @import 'bootstrap/dist/css/bootstrap';
 
-img {
-  background-image: asset-url('ima.jpg');
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
+html, body {
+  height: 100%;
 }
-
 .navbar-collapse {
   flex-grow: 0;
 }
@@ -66,10 +62,6 @@ img {
   border-bottom-right-radius: 5px;
 }
 
-.card {
-  height: 200px;
-}
-
 .rounded-right-0 {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
@@ -82,4 +74,22 @@ img {
 
 .search-input {
   outline: none;
+}
+
+.welcome-page {
+  height: 85%;
+  margin-top: 3%;
+  background-image: asset-url('library.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.welcome-page-header {
+  font-family: serif;
+  font-style: italic;
+}
+
+#page-content {
+  flex: 1 0 auto;
 }

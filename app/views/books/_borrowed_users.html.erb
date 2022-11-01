@@ -1,0 +1,22 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">No</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Checkout Date</th>
+      <th scope="col">Return Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @borrowed_users.each.with_index do |user, index|%>
+      <tr>
+        <th scope="row"><%= index + 1 %></th>
+        <td><%= user[:first_name] %></td>
+        <td><%= user[:last_name] %></td>
+        <td><%= user[:checkout_date].strftime("%d/%m/%Y") %></td>
+        <td><%= user[:return_date].strftime("%d/%m/%Y") %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

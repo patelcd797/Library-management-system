@@ -1,25 +1,31 @@
-<div class="container py-5 ">
+<div class="container py-5">
     <div class="card h-100">
         <h1 class="my-3 text-capitalize px-3"><%= @book.title %></h1>
-        <div class="d-flex">
+        <div class="d-flex mx-2 border-bottom  pb-2">
             <%= image_tag(@book.image, :alt => "rss feed", :class => "card-img-top w-25") %>
-            <div class="card-body">
+            <div class="card-body pb-0">
                 <p class="card-text mb-1"><%= @book.description%></p>
                 <p class="card-text mb-1">Author: <%= @book.author%></p>
                 <p class="card-text mb-1">Price: <%= @book.price %></p>
                 <p class="card-text mb-1">No of Books: <%= @book.no_of_books %> / Available: <%= @book.no_of_books_available %> </p>
-                <% if current_user.admin? %>
-                    <%= link_to "Edit details", edit_book_path(@book), class: "btn btn-success text-nowrap" %>
-                <% end %>
+                <p class="card-text mt-2">
+                     <% if current_user.admin? %>
+                        <%= link_to "Edit details", edit_book_path(@book), class: "btn btn-success text-nowrap" %>
+                        <%= link_to "Remove book", book_path(@book), class: "btn btn-danger text-nowrap", data: {confirm: "are you sure you want to remove a book?"}, method: :delete %>
+                    <% end %>
+                    <% if @book.no_of_books_available > 0 %>
+                        <%= link_to "Checkout a book", checkout_books_path(book: @book), class: "btn btn-success text-nowrap", method: :post %>
+                    <% else %>
+                        <%= link_to "Reserve book", '#', class: "btn btn-primary text-nowrap" %>
+                    <% end %>
+                </p>
             </div>
         </div>
-        <div class="card-body">
-            <h5 class="card-title">Book check out users</h5>
-            <p class="card-text mb-1"><%= @book.description%></p>
-            <p class="card-text mb-1">Author: <%= @book.author%></p>
-            <p class="card-text mb-1">Price: <%= @book.price %></p>
-            <p class="card-text mb-1">No of Books: <%= @book.no_of_books %> / Available: <%= @book.no_of_books_available %> </p>
-            <a href="#" class="btn btn-primary text-nowrap">Go somewhere</a>
-        </div>
+        <% if @borrowed_users.any? %>
+            <div class="card-body">
+                <h5 class="card-title">Book check out users</h5>
+                <%= render 'books/borrowed_users' %>
+            </div>
+        <% end %>
     </div>
 </div>
