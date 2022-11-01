@@ -1,33 +1,33 @@
-<%= form_with(model: @user, local: true) do |f| %>
-    <div class="row">
+<%= form_with(model: @user, local: true, autocomplete: "off" ) do |f| %>
+    <div class="row mt-3">
         <div class="col">
             <div class="form-group">
-                <div class="d-flex flex-column">
-                    <%= f.label :first_name %>
-                    <%= f.text_field :first_name, placeholder: "First Name", class: "form-control" %>
-                </div>
+                <%= f.text_field :first_name, placeholder: " ", class: "form-control" %>
+                <%= f.label :first_name, class: "form-label" %>
             </div>
         </div>
         <div class="col">
             <div class="form-group">
-                <div class="d-flex flex-column">
-                    <%= f.label :last_name %>
-                    <%= f.text_field :last_name, placeholder: "Last Name", class: "form-control" %>
-                </div>
+                <%= f.text_field :last_name, placeholder: " ", class: "form-control" %>
+                <%= f.label :last_name, class: "form-label" %>
             </div>
         </div>
     </div>
     <div class="form-group">
-        <%= f.label :email %>
-        <%= f.email_field :email, placeholder: "Email address", class: "form-control" %>
+        <%= f.email_field :email, placeholder: " ", class: "form-control" %>
+        <%= f.label :email, class: "form-label" %>
     </div>
     <div class="form-group">
-        <%= f.label :contact_number %>
-        <%= f.number_field :contact_number, class: "form-control", placeholder: "Contact number" %>
+        <%= f.number_field :contact_number, class: "form-control", placeholder: " " %>
+         <%= f.label :contact_number, class: "form-label" %>
     </div>
     <div class="form-group">
-        <%= f.label :password %>
-        <%= f.password_field :password, class: "form-control", placeholder: "Password" %>
+        <%= f.password_field :password, class: "form-control", placeholder: " "  %>
+        <%= f.label :password, class: "form-label" %>
+    </div>
+    <div class="form-group">
+        <%= f.label :image %>
+        <%= f.file_field :image, class:"d-block" %>
     </div>
     <%= f.submit(@user.new_record? ? "Sign up" : "Update user", class: "btn btn-success m-auto") %>
 <% end %>

@@ -6,16 +6,8 @@ class UsersController < ApplicationController
     before_action :borrowed_book?, only: [:destroy]
 
     def show
-        @borrowed_books = []
-        @user.books.each { |book|
-            checkout_book = CheckoutBook.find_by(user_id: @user.id, book_id: book.id) 
-            puts checkout_book
-            borrow_book = { title: book.title, 
-                            checkout_date: checkout_book.checkout_date, 
-                            return_date: checkout_book.return_date
-                        }
-            @borrowed_books.push(borrow_book)
-        }
+        @borrowed_books = borrowed_book
+        @wishlisted_books = wishlisted_books
     end
 
     def new
@@ -85,7 +77,7 @@ class UsersController < ApplicationController
 
     private 
     def user_param
-        params.require(:user).permit(:first_name, :last_name, :email, :password, :contact_number)
+        params.require(:user).permit(:first_name, :last_name, :email, :password, :contact_number, :image)
     end
 
     def set_user
@@ -114,9 +106,32 @@ class UsersController < ApplicationController
         end
     end
     def requires_same_user_or_admin
-        if !current_user.admin? || current_user != @user
-            flash[:alert] = "You can't perfome this operation. please login and try again"
+        if (current_user!= @user && !current_user.admin?) || current_user.id != @user.id
+            flash[:alert] = "You can't perfome this operation. p"
             redirect_to request.referrer
         end 
+    end
+    
+    def borrowed_book
+        @borrowed_books = []
+        @user.books.each { |book|
+            checkout_book = CheckoutBook.find_by(user_id: @user.id, book_id: book.id) 
+            borrow_book = { title: book.title, 
+                            checkout_date: checkout_book.checkout_date, 
+                            return_date: checkout_book.return_date
+                        }
+            @borrowed_books.push(borrow_book)
+        }
+        @borrowed_books
+    end
+
+    def wishlisted_books
+        @wishlisted_books = []
+        @user.reserve_books.each { |book|
+            reserve_book = ReserveBook.find_by(user_id: @user.id, book_id: book.id) 
+            wishlist_book = { title: book.title, wishlist_date: reserve_book.created_at }
+            @wishlisted_books.push(wishlist_book)
+        }
+        @wishlisted_books
     end
 end

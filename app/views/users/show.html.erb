@@ -1,19 +1,22 @@
 <div class="d-flex flex-column m-4">
     <div class="d-flex my-2">
-        <%= gravetar_for @user, size: 200 %>
+        <%= image_tag(@user.image, :alt => "rss feed", :class => "card-img-top w-25") %>
         <div class="ml-4">
             <h1><%= @user.full_name %></h1>
             <div class="my-1"><i class="fa-solid fa-envelope"></i> <%= @user.email %></div>
             <div class="my-1"> <i class="fa-solid fa-square-phone"></i> <%= @user.contact_number.to_s %></div>
         </div>
     </div>
-    <% if @user.books.any? %>
+    <% if @borrowed_books.size > 0  %>
         <div class="d-flex flex-column my-2">
             <h5>Check-out books</h5>
-            <%= render 'users/borrowed_books' %>
+            <%= render 'books/books_list', books: @borrowed_books %>
         </div>
     <% end %>
-    <div class="d-flex flex-column my-2">
-        <h5>Wish list books</h5>
-    </div>
+    <% if @wishlisted_books.size > 0 %>
+        <div class="d-flex flex-column my-2">
+            <h5>Wish list books</h5>
+            <%= render 'books/books_list', books: @wishlisted_books  %>
+        </div>
+    <% end %>
 </div>

@@ -1,0 +1,29 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">No</th>
+      <th scope="col">Title</th>
+      <% if books.first.has_key?(:wishlist_date) %>
+        <th scope="col">Wishlist Date</th>
+      <% else %>
+        <th scope="col">Checkout Date</th>
+        <th scope="col">Return Date</th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% books.each.with_index do |book, index|%>
+      <tr>
+        <th scope="row"><%= index + 1 %></th>
+        <td><%= book[:title] %></td>
+        <% if book.has_key?(:wishlist_date) %>
+          <th scope="col"><%= book[:whishlist_date] %></th>
+        <% else %>
+          <td><%= book[:checkout_date].strftime("%d/%m/%Y") %></td>
+          <td><%= book[:return_date].strftime("%d/%m/%Y") %></td>
+        <% end %>
+        
+    </tr>
+    <% end %>
+  </tbody>
+</table>

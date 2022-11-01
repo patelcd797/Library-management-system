@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   post 'login', to: 'session#create'
   delete 'logout', to: 'session#destroy'
   resources :checkout_books, only: [:create, :destroy, :update]
+  resources :reserve_books, only: [:create, :destroy]
   resources :books
   
 end

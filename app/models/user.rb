@@ -7,9 +7,14 @@ class User < ApplicationRecord
     validates :last_name, presence: true
     validates :contact_number, presence: true, uniqueness: true, length: {minimum: 10, maximum: 12}
     has_secure_password
+    has_one_attached :image, :dependent => :destroy
+    validates :image, presence: true
 
     has_many :checkout_book
     has_many :books, through: :checkout_book
+
+    has_many :reserve_book, :dependent => :destroy
+    has_many :reserve_books, through: :reserve_book, source: :book
 
     def full_name
         return "#{first_name} #{last_name}" if self.first_name || self.last_name
@@ -25,5 +30,9 @@ class User < ApplicationRecord
 
     def self.matches(field, param)
         where("#{field} like?", param)
+    end
+
+    def book_reserved?(book)
+        reserve_books.include?(book)
     end
 end

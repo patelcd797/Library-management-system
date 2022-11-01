@@ -14,16 +14,9 @@ class BooksController < ApplicationController
     end
 
     def show
-        @borrowed_users = []
-        @book.users.each { |user|
-            checkout_book = CheckoutBook.find_by(user_id: user.id, book_id: @book.id) 
-            puts checkout_book
-            borrow_user = { first_name: user.first_name, last_name: user.last_name, 
-                            checkout_date: checkout_book.checkout_date, 
-                            return_date: checkout_book.return_date
-                        }
-            @borrowed_users.push(borrow_user)
-        }
+        @borrowed_users = checkout_users
+        @wishlisted_users = wishlisted_users
+        puts @wishlisted_users
     end
 
     def search 
@@ -108,4 +101,29 @@ class BooksController < ApplicationController
         end
     end
 
+    def checkout_users
+        @users_list = []
+        @book.users.each { |user|
+            checkout_book = CheckoutBook.find_by(user_id: user.id, book_id: @book.id)
+            puts checkout_book.checkout_date 
+            borrow_user = { first_name: user.first_name, last_name: user.last_name, 
+                            checkout_date: checkout_book.checkout_date, 
+                            return_date: checkout_book.return_date
+                        }
+            @users_list.push(borrow_user)
+        }
+        @users_list
+    end
+
+    def wishlisted_users
+        @list = []
+        @book.wishlisted_users.each { |user|
+            reserve_book = ReserveBook.find_by(user_id: user.id, book_id: @book.id) 
+            wishlisted_user = { first_name: user.first_name, last_name: user.last_name, 
+                            whishlist_date: reserve_book.created_at
+                        }
+            @list.push(wishlisted_user)
+        }
+        @list
+    end
 end

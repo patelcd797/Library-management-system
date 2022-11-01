@@ -16,15 +16,25 @@
                     <% if @book.no_of_books_available > 0 %>
                         <%= link_to "Checkout a book", checkout_books_path(book: @book), class: "btn btn-success text-nowrap", method: :post %>
                     <% else %>
-                        <%= link_to "Reserve book", '#', class: "btn btn-primary text-nowrap" %>
+                        <% if !current_user.book_reserved?(@book) %>
+                            <%= link_to "Reserve book", reserve_books_path(book: @book), class: "btn btn-primary text-nowrap", method: :post %>
+                        <% else %>
+                            <%= link_to "Unreserve book", reserve_book_path(@book), class: "btn btn-danger text-nowrap", method: :delete %>
+                        <% end %>
                     <% end %>
                 </p>
             </div>
         </div>
-        <% if @borrowed_users.any? %>
+        <% if @borrowed_users.size > 0 %>
             <div class="card-body">
                 <h5 class="card-title">Book check out users</h5>
-                <%= render 'books/borrowed_users' %>
+                <%= render 'users/users_list', users: @borrowed_users %>
+            </div>
+        <% end %>
+        <% if @wishlisted_users.size > 0 %>
+            <div class="card-body">
+                <h5 class="card-title">Wish list users</h5>
+                <%= render 'users/users_list', users: @wishlisted_users %>
             </div>
         <% end %>
     </div>
