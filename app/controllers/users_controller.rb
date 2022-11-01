@@ -52,9 +52,9 @@ class UsersController < ApplicationController
                 else 
                     @message = "Some error occured please try again"
                 end
-                flash[:alert] = @message
-                render 'users/new'
             end
+            flash[:alert] = @message
+            redirect_to signup_path
         end
     end
 
