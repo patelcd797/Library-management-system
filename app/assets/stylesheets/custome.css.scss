@@ -109,7 +109,7 @@ html, body {
   top: 20%;
   transition: all 0.35s ease;
 }
-.form-control {
+.form-control-in {
   display: block;
   font-family: inherit;
   font-size: 1rem;
@@ -141,4 +141,8 @@ html, body {
     z-index: 5;
   }
 
+}
+
+.height-500 {
+  max-height: 300px;
 }

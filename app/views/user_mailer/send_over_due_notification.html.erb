@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p>Hello <%= @user.full_name %>, Hope you are doing well. we have inform you to return the below books as soon as possible.</p>
+    <p>
+    Book details<br>
+    --------------------------
+    </p>
+    <div class="d-flex mx-2 border-bottom  pb-2">
+        <div class="card-body pb-0">
+          <p class="card-text mb-1">Title: <%= @book.title%></p>
+          <p class="card-text mb-1">Description: <%= @book.description%></p>
+          <p class="card-text mb-1">Author: <%= @book.author%></p>
+        </div>
+    </div>
+  </body>
+</html>

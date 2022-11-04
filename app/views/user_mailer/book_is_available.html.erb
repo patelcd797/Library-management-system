@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p>Your wish list book <%= @book.title %> is avialable. you can checkout the book</p>
+    <p>
+    Book details<br>
+    --------------------------
+    </p>
+    <div class="d-flex mx-2 border-bottom  pb-2">
+        <div class="card-body pb-0">
+            <p class="card-text mb-1">Description: <%= @book.description%></p>
+            <p class="card-text mb-1">Author: <%= @book.author%></p>
+            <p class="card-text mb-1">Price: <%= @book.price %></p>
+            <p class="card-text mb-1">No of Available Books: <%= @book.no_of_books_available %> </p>
+        </div>
+    </div>
+  </body>
+</html>

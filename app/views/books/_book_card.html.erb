@@ -1,5 +1,7 @@
-<div class="card flex-row justify-content-start m-2">
-  <%= image_tag(book.image, :alt => "rss feed", :class => "card-img-top w-25") %>
+<div class="card flex-row justify-content-start m-2 height-500">
+  <div class="w-25">
+    <%= image_tag(book.image, :alt => "rss feed", :class => "card-img-top") %>
+  </div>
   <div class="card-body">
     <h5 class="card-title"><%= book.title %></h5>
     <p class="card-text mb-1"><%= book.description%></p>
@@ -11,10 +13,10 @@
         <%= link_to "Edit details", edit_book_path(book), class: "btn btn-success text-nowrap" %>
         <%= link_to "Remove book", book_path(book), class: "btn btn-danger text-nowrap", data: {confirm: "are you sure you want to remove a book?"}, method: :delete %>
       <% end %>
-      <% if current_page?('/users/checkout') %>
-        <%= link_to "Return a book", checkout_book_path(book), class: "btn btn-success text-nowrap", method: :delete %>
-        <%= link_to "Renew a book", checkout_book_path(book), class: "btn btn-success text-nowrap", method: :patch %>
-      <% else %>
+        <% if current_page?('/users/checkout') %>
+          <%= link_to "Return a book", checkout_book_path(book), class: "btn btn-success text-nowrap", method: :delete %>
+          <%= link_to "Renew a book", checkout_book_path(book), class: "btn btn-success text-nowrap", method: :patch %>
+        <% else %>
         <% if book.no_of_books_available > 0 %>
           <%= link_to "Checkout a book", checkout_books_path(book: book), class: "btn btn-success text-nowrap", method: :post %>
         <% else %>

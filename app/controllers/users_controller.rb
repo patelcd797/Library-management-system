@@ -4,7 +4,11 @@ class UsersController < ApplicationController
     before_action :same_user, only: [:edit, :update]
     before_action :requires_same_user_or_admin, only: [:destroy]
     before_action :borrowed_book?, only: [:destroy]
+    before_action :admin_user?, only: [:index]
 
+    def index
+        @users = User.all 
+    end
     def show
         @borrowed_books = borrowed_book
         @wishlisted_books = wishlisted_books
@@ -17,6 +21,17 @@ class UsersController < ApplicationController
     def edit 
     end
 
+    def search
+        search = params[:search][:search]
+        search.strip!
+        @users = User.search_user(search)
+
+        respond_to do |format|
+            format.js { render 'users/results'}
+            format.html { render login_path }
+        end
+    end
+
     def checkout
         @books = current_user.books.paginate(page: params[:page], per_page: 3)
     end
@@ -27,6 +42,7 @@ class UsersController < ApplicationController
         if @user.save
             session[:user_id] = @user.id
             flash[:notice] = "User successfully created"
+            UserMailer.with(user: @user).welcome_mail.deliver_now
             redirect_to books_path
         else 
             puts @user.errors.messages
@@ -53,6 +69,7 @@ class UsersController < ApplicationController
                     @message = "Some error occured please try again"
                 end
             end
+            puts @user.errors.messages
             flash[:alert] = @message
             redirect_to signup_path
         end
@@ -70,9 +87,14 @@ class UsersController < ApplicationController
     end
 
     def destroy
-        session[:user_id] = nil
-        @user.destroy
-        redirect_to login_path 
+        if current_user == @user
+            session[:user_id] = nil
+            @user.destroy
+            redirect_to login_path 
+        else 
+            @user.destroy
+            redirect_to users_path
+        end
     end
 
     private 
@@ -92,7 +114,6 @@ class UsersController < ApplicationController
     end
 
     def required_login
-        puts "function called"
         if !logged_in?
             flash[:alert] = "You can't perfome this operation. please login and try again"
             redirect_to login_path
@@ -106,8 +127,8 @@ class UsersController < ApplicationController
         end
     end
     def requires_same_user_or_admin
-        if (current_user!= @user && !current_user.admin?) || current_user.id != @user.id
-            flash[:alert] = "You can't perfome this operation. p"
+        if (current_user!= @user && !current_user.admin?)
+            flash[:alert] = "You can't perfome this operation."
             redirect_to request.referrer
         end 
     end
@@ -133,5 +154,11 @@ class UsersController < ApplicationController
             @wishlisted_books.push(wishlist_book)
         }
         @wishlisted_books
+    end
+
+    def admin_user?
+        if !current_user.admin
+            redirect_to current_user
+        end
     end
 end

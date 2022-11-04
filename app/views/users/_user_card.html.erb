@@ -1,0 +1,16 @@
+<div class="card flex-row justify-content-start m-2 height-500">
+  <div class="w-25">
+    <%= image_tag(user.image, :alt => "rss feed", :class => "card-img-top") %>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title"><%= user.full_name %></h5>
+    <p class="card-text mb-1"><i class="fa-solid fa-envelope"></i> <%= user.email %></p>
+    <p class="card-text mb-1"><i class="fa-solid fa-square-phone"></i> <%= user.contact_number.to_s %></p>
+    <p class="card-text mb-1">
+      <%= link_to "View Profile", user, class: "btn btn-success text-nowrap" %>
+      <% if current_user.admin? %>
+        <%= link_to "Remove user", user_path(user), class: "btn btn-danger text-nowrap", data: {confirm: "are you sure you want to remove a book?"}, method: :delete %>
+      <% end %>
+    </p>
+  </div>
+</div>

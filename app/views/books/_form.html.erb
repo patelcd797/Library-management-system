@@ -1,22 +1,22 @@
 <%= form_with(model: @book, local:true) do |f| %>
     <div class="form-group">
-        <%= f.text_field :title, placeholder: "Title of book", class: "form-control" %>
+        <%= f.text_field :title, placeholder: "Title of book", class: "form-control form-control-in" %>
         <%= f.label :title, class: "form-label" %>
     </div>
     <div class="form-group">
-        <%= f.text_area :description, placeholder: "Short description of book", class: "form-control" %>
+        <%= f.text_area :description, placeholder: "Short description of book", class: "form-control form-control-in" %>
         <%= f.label :description, class: "form-label" %>
     </div>
     <div class="row">
         <div class="col">
             <div class="form-group">
-                <%= f.text_field :author, placeholder: "Author name", class: "form-control" %>
+                <%= f.text_field :author, placeholder: "Author name", class: "form-control form-control-in" %>
                 <%= f.label :author, class: "form-label" %>
             </div>
         </div>
         <div class="col">
             <div class="form-group">
-                <%= f.text_field :language, placeholder: "Language", class: "form-control" %>
+                <%= f.text_field :language, placeholder: "Language", class: "form-control form-control-in" %>
                 <%= f.label :language, class: "form-label" %>
             </div>
         </div>
@@ -24,14 +24,14 @@
     <div class="row">
         <div class="col">
             <div class="form-group">
-                <%= f.number_field :price, placeholder: "Price", step: :any, class: "form-control" %>
+                <%= f.number_field :price, placeholder: "Price", step: :any, class: "form-control form-control-in" %>
                 <%= f.label :price, class: "form-label" %>
                 
             </div>
         </div>
         <div class="col">
             <div class="form-group">
-                <%= f.number_field :no_of_books, placeholder: "No of Books", class: "form-control" %>
+                <%= f.number_field :no_of_books, placeholder: "No of Books", class: "form-control form-control-in" %>
                 <%= f.label :no_of_books, class: "form-label" %>
             </div>
         </div>

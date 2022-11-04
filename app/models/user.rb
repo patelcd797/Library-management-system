@@ -1,7 +1,7 @@
 class User < ApplicationRecord
-    VALID_EMAIL_REGEX = VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
+    VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
     validates :email, presence: true, 
-                    length: { maximum: 25}, 
+                    length: { maximum: 125}, 
                     uniqueness: true,
                     format: {with: VALID_EMAIL_REGEX}
     validates :last_name, presence: true
@@ -34,5 +34,15 @@ class User < ApplicationRecord
 
     def book_reserved?(book)
         reserve_books.include?(book)
+    end
+
+    def self.search_user(param)
+        if param
+            result = where("email like ? OR first_name like ? OR last_name like ? OR contact_number like ?", "%#{param}%","%#{param}%","%#{param}%", "%#{param}%")
+            result if result.size > 0
+            all
+        else
+            scoped
+        end
     end
 end

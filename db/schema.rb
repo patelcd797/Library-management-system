@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_01_090933) do
+ActiveRecord::Schema.define(version: 2022_11_02_100416) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -63,11 +63,17 @@ ActiveRecord::Schema.define(version: 2022_11_01_090933) do
     t.index ["user_id"], name: "index_checkout_books_on_user_id"
   end
 
+  create_table "checkout_books_tables", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "reserve_books", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "book_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "mail_sent", default: false
     t.index ["book_id"], name: "index_reserve_books_on_book_id"
     t.index ["user_id"], name: "index_reserve_books_on_user_id"
   end
