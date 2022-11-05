@@ -16,6 +16,8 @@ class User < ApplicationRecord
     has_many :reserve_book, :dependent => :destroy
     has_many :reserve_books, through: :reserve_book, source: :book
 
+    has_many :records, :dependent => :destroy, class_name: 'UserRecord'
+
     def full_name
         return "#{first_name} #{last_name}" if self.first_name || self.last_name
         "Anonymous"
@@ -44,5 +46,9 @@ class User < ApplicationRecord
         else
             scoped
         end
+    end
+
+    def book_borrowed?(book)
+        books.include?(book)
     end
 end

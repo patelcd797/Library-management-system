@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+    CHECKOUT_RECORD_TYPE = 1
+    WISHLIST_RECORD_TYPE = 2
+
     before_action :required_login, except: [:new, :create]
     before_action :set_user, only: [:edit, :show, :update, :destroy]
     before_action :same_user, only: [:edit, :update]
@@ -10,6 +13,16 @@ class UsersController < ApplicationController
         @users = User.all 
     end
     def show
+        @checkout_book_record = UserRecord.where("user_id=#{@user.id} AND record_type=#{CHECKOUT_RECORD_TYPE}").group_by_month(:created_at, format: "%b %y", range: Time.now.prev_year.next_month.at_beginning_of_month..Time.now).count
+        @checkout_book_record.shift
+        @checkout_book_record_exist = false
+        @checkout_book_record.each {|key, value| @checkout_book_record_exist =true if value!=0 }
+
+        @wishlist_book_record = UserRecord.where("user_id=#{@user.id} AND record_type=#{WISHLIST_RECORD_TYPE}").group_by_month(:created_at, format: "%b %y", range: Time.now.prev_year.next_month.at_beginning_of_month..Time.now).count
+        @wishlist_book_record.shift
+        @wishlist_book_record_exist = false
+        @wishlist_book_record.each {|key, value| @wishlist_book_record_exist =true if value!=0 }
+
         @borrowed_books = borrowed_book
         @wishlisted_books = wishlisted_books
     end

@@ -14,6 +14,7 @@ class Book < ApplicationRecord
     has_many :wishlisted_users, through: :reserve_book, source: :user
 
     has_many :feedback, :dependent => :destroy
+    has_many :records, :dependent => :destroy, class_name: 'BookRecord'
 
     def self.search(param)
         if param

@@ -6,15 +6,13 @@
     <p class="card-text mb-1">Author: <%= book.author%></p>
     <p class="card-text mb-1">Price: <%= book.price %></p>
     <p class="card-text mb-1">
-      <%= link_to "View details", book, class: "btn btn-success text-nowrap" %>
-      <% if current_user.admin? %>
-        <%= link_to "Edit details", edit_book_path(book), class: "btn btn-success text-nowrap" %>
-        <%= link_to "Remove book", book_path(book), class: "btn btn-danger text-nowrap", data: {confirm: "are you sure you want to remove a book?"}, method: :delete %>
-      <% end %>
-        <% if current_page?('/users/checkout') %>
-          <%= link_to "Return a book", checkout_book_path(book), class: "btn btn-success text-nowrap", method: :delete %>
-          <%= link_to "Renew a book", checkout_book_path(book), class: "btn btn-success text-nowrap", method: :patch %>
-        <% else %>
+      <%= link_to "View details", book, class: "btn btn-primary text-nowrap" %>
+      <% if current_user.book_borrowed?(book) %>
+          <%= link_to "Return a book", checkout_book_path(book), class: "btn btn-warning text-nowrap", method: :delete %>
+          <% if CheckoutBook.show_return_button?(user: current_user, book: book) %>
+            <%= link_to "Renew a book", checkout_book_path(book), class: "btn btn-success text-nowrap", method: :patch %>
+          <% end %>
+      <% else %>
         <% if book.no_of_books_available > 0 %>
           <%= link_to "Checkout a book", checkout_books_path(book: book), class: "btn btn-success text-nowrap", method: :post %>
         <% else %>
@@ -24,6 +22,10 @@
               <%= link_to "Unreserve book", reserve_book_path(book), class: "btn btn-danger text-nowrap", method: :delete %>
             <% end %>
         <% end %>
+      <% end %>
+      <% if current_user.admin? && !current_page?('/users/checkout') %>
+        <%= link_to "Edit details", edit_book_path(book), class: "btn btn-info text-nowrap" %>
+        <%= link_to "Remove book", book_path(book), class: "btn btn-danger text-nowrap", data: {confirm: "are you sure you want to remove a book?"}, method: :delete %>
       <% end %>
     </p>
   </div>

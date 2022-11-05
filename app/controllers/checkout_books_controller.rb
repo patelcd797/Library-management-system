@@ -16,6 +16,15 @@ class CheckoutBooksController < ApplicationController
         end 
 
         @checkout_book = CheckoutBook.create(user: current_user, book: @book, checkout_date:  Date.current(), return_date: Date.current() + 5.days)
+        
+        # record type 1 => checkout book and 2 => wishlist  
+        @book_record = BookRecord.new(book_id: @book.id, record_type: 1)
+        @book_record.save
+
+        # record type 1 => checkout book and 2 => wishlist  
+        @user_record = UserRecord.new(user_id: current_user.id, record_type: 1)
+        @user_record.save
+
         flash[:notice] = "Book successfully added"
         redirect_to users_checkout_path
     end
@@ -25,6 +34,14 @@ class CheckoutBooksController < ApplicationController
         if book
             checkout_book = CheckoutBook.find_by(user_id: current_user.id, book_id: book.id)
             if checkout_book.update(checkout_date: Date.current(), return_date: Date.current() + 5.days)
+                # record type 1 => checkout book and 2 => wishlist  
+                @book_record = BookRecord.new(book_id: @book.id, record_type: 1)
+                @book_record.save
+
+                # record type 1 => checkout book and 2 => wishlist  
+                @user_record = UserRecord.new(user_id: current_user.id, record_type: 1)
+                @user_record.save
+
                 flash[:notice] = "Book successfully renewed"
                 redirect_to users_checkout_path
             else

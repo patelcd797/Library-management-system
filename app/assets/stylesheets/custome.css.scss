@@ -77,7 +77,7 @@ html, body {
   outline: none;
 }
 
-.welcome-page {
+.welcome-page, .book-details {
   height: 85%;
   margin-top: 3%;
   background-image: asset-url('library.jpg');
@@ -168,7 +168,11 @@ html, body {
   overflow: hidden;
 }
 
-.feedback-section {
+.book-details {
+  height: 80%;
+}
+
+.feedback-section, .admin-section {
   max-height: 400px;
   overflow: scroll;
   &::-webkit-scrollbar {
@@ -194,4 +198,13 @@ html, body {
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
+}
+
+.book-details {
+  height: 300px;
+  margin: 0;
+  &-header {
+    position: absolute;
+    
+  }
 }

@@ -7,6 +7,25 @@
             <div class="my-1"> <i class="fa-solid fa-square-phone"></i> <%= @user.contact_number.to_s %></div>
         </div>
     </div>
+    <% if current_user.admin %>
+        <% if @checkout_book_record_exist || @wishlist_book_record_exist %>
+            <h5 class="card-title  mt-4">Book Analysis</h5>
+        <% end %>
+        <div class="d-flex justify-content-between">
+            <% if @checkout_book_record_exist %>
+                <div class= "<%= @wishlist_book_record_exist ? "w-50" : "w-100" %>" >
+                    <%= pie_chart @checkout_book_record, legend: "left" %>
+                    <div class="text-center pl-5 ml-5 mt-2">Checkout Books</div>
+                </div>
+            <% end %>
+            <% if @wishlist_book_record_exist %>
+                <div class= "<%=@checkout_book_record_exist ? "w-50" : "w-100" %>" >
+                    <%= pie_chart @wishlist_book_record, legend: @checkout_book_record.size != 0 ? "none" : "left" %> 
+                    <div class="text-center mt-2">Wishlist Books</div>
+                </div>
+            <% end %> 
+        </div>
+    <% end %>
     <% if @borrowed_books.size > 0  %>
         <div class="d-flex flex-column my-2">
             <h5>Check-out books</h5>

@@ -30,6 +30,9 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem "font-awesome-rails"
 gem 'will_paginate', '~> 3.3'
 gem 'whenever', require: false
+gem "chartkick"
+gem "groupdate"
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

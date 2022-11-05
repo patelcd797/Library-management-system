@@ -8,6 +8,15 @@ class ReserveBooksController < ApplicationController
     def create
         book = Book.find(params[:book])
         reserve_book = ReserveBook.create(user: current_user, book: book)
+
+        # record type 1 => checkout book and 2 => wishlist  
+        @book_record = BookRecord.new(book_id: @book.id, record_type: 2)
+        @book_record.save
+
+        # record type 1 => checkout book and 2 => wishlist  
+        @user_record = UserRecord.new(user_id: current_user.id, record_type: 2)
+        @user_record.save
+
         redirect_to request.referrer
     end 
 
