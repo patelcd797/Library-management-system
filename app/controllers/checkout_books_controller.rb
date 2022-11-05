@@ -50,7 +50,7 @@ class CheckoutBooksController < ApplicationController
             if wishlisted_users.size > 0 
                 UserMailer.with(book: book, users: wishlisted_users).book_is_available.deliver_now
             end
-            redirect_to users_checkout_path
+            redirect_to new_feedback_path
         else 
             flash[:alert] = "You can't perform this operation. details is wrong"
             redirect_to request.referrer

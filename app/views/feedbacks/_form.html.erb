@@ -1,0 +1,37 @@
+<%= form_for :feedbacks, url: feedbacks_path do |f| %>
+    <div class="text-center mb-4"> 
+        <div class="form-check form-check-inline">
+            <%= f.radio_button :rating, 1, class: "form-check-input emoji-check-box" %>
+            <div class="emoji">😡</div>
+        </div>
+        <div class="form-check form-check-inline">
+            <%= f.radio_button :rating, 2, class: "form-check-input emoji-check-box" %>
+            <div class="emoji">😔</div> 
+        </div>
+        <div class="form-check form-check-inline">
+            <%= f.radio_button :rating, 3, class: "form-check-input emoji-check-box" %>
+            <div class="emoji">😐</div>
+        </div>
+        <div class="form-check form-check-inline">
+            <%= f.radio_button :rating, 4, class: "form-check-input emoji-check-box" %>
+            <div class="emoji">😊</div>
+        </div>
+        <div class="form-check form-check-inline">
+            <%= f.radio_button :rating, 5, class: "form-check-input emoji-check-box" %>
+            <div class="emoji">😍</div>
+        </div>
+        <%= f.hidden_field :book_id, value: @book_id %>
+    </div>
+
+    <div class="form-group mt-3">
+        <%= f.text_area :comment, placeholder: "Message", class: "form-control bg-light", rows: 5 %>
+    </div>
+    <div class="form-check my-2">
+        <%= f.check_box :recommended , class: "form-check-input" %>
+        <%= f.label "Recommend to other", class: "form-check-label"  %>
+    </div>
+    <div class="text-center">
+        <%= f.submit "Send feedback", class: "btn btn-primary w-100" %>
+    </div>
+    
+<% end %>

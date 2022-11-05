@@ -2,6 +2,7 @@
 
 html, body {
   height: 100%;
+  background-color: #f7f7f7;
 }
 .navbar-collapse {
   flex-grow: 0;
@@ -145,4 +146,52 @@ html, body {
 
 .height-500 {
   max-height: 300px;
+}
+
+.emoji {
+  font-size: 40px;
+  cursor: pointer;
+}
+
+.emoji-check-box {
+  position: absolute !important;
+  margin-right: 0 !important;
+  margin-left: 5px !important;
+  height: 40px;
+  width: 40px;
+  appearance: none;
+  cursor: pointer;
+}
+
+.rounded-20 {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.feedback-section {
+  max-height: 400px;
+  overflow: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.minw-200 {
+  min-width: 200px!important;
+  max-width: 200px!important;
+}
+
+.minh-250 {
+  min-height: 250px!important;
+  max-height: 250px!important;
+}
+
+.image-style {
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
 }

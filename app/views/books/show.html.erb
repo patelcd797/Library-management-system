@@ -2,7 +2,7 @@
     <div class="card h-100">
         <h1 class="my-3 text-capitalize px-3"><%= @book.title %></h1>
         <div class="d-flex mx-2 border-bottom  pb-2">
-            <%= image_tag(@book.image, :alt => "rss feed", :class => "card-img-top w-25") %>
+            <%= image_tag(@book.image, :alt => "rss feed", :class => "card-img-top minh-250 minw-200") %>
             <div class="card-body pb-0">
                 <p class="card-text mb-1"><%= @book.description%></p>
                 <p class="card-text mb-1">Author: <%= @book.author%></p>
@@ -25,17 +25,37 @@
                 </p>
             </div>
         </div>
-        <% if @borrowed_users.size > 0 %>
-            <div class="card-body">
-                <h5 class="card-title">Book check out users</h5>
-                <%= render 'users/users_list', users: @borrowed_users %>
-            </div>
-        <% end %>
-        <% if @wishlisted_users.size > 0 %>
-            <div class="card-body">
-                <h5 class="card-title">Wish list users</h5>
-                <%= render 'users/users_list', users: @wishlisted_users %>
-            </div>
+        <% if current_user.admin %>
+            <% if @borrowed_users.size > 0 %>
+                <div class="card-body">
+                    <h5 class="card-title">Book check out users</h5>
+                    <%= render 'users/users_list', users: @borrowed_users %>
+                </div>
+            <% end %>
+            <% if @wishlisted_users.size > 0 %>
+                <div class="card-body">
+                    <h5 class="card-title">Wish list users</h5>
+                    <%= render 'users/users_list', users: @wishlisted_users %>
+                </div>
+            <% end %>
+        <% else %>
+            <% if @book.feedback.size > 0 %>
+                <div class="card-body feedback-section">
+                    <h5 class="card-title">User Feedbacks</h5>
+                    <% @book.feedback.each do |feedback| %>
+                        <%= render 'books/feedback_card', feedback: feedback %>
+                    <% end %>
+                    <% @book.feedback.each do |feedback| %>
+                        <%= render 'books/feedback_card', feedback: feedback %>
+                    <% end %>
+                    <% @book.feedback.each do |feedback| %>
+                        <%= render 'books/feedback_card', feedback: feedback %>
+                    <% end %>
+                    <% @book.feedback.each do |feedback| %>
+                        <%= render 'books/feedback_card', feedback: feedback %>
+                    <% end %>
+                </div>
+            <% end %>
         <% end %>
     </div>
 </div>

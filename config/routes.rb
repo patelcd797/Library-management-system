@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get 'login', to: 'session#new'
   post 'login', to: 'session#create'
   delete 'logout', to: 'session#destroy'
+  resources :feedbacks, only: [:new,:create, :update] 
   resources :checkout_books, only: [:create, :destroy, :update]
   resources :reserve_books, only: [:create, :destroy]
   resources :books

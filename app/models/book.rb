@@ -13,6 +13,8 @@ class Book < ApplicationRecord
     has_many :reserve_book, :dependent => :destroy
     has_many :wishlisted_users, through: :reserve_book, source: :user
 
+    has_many :feedback, :dependent => :destroy
+
     def self.search(param)
         if param
             result = where("title like ? OR description like ? OR author like ?", "%#{param}%","%#{param}%","%#{param}%")
