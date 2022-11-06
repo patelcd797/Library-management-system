@@ -1,0 +1,26 @@
+<table class="table table-striped w-#{width}">
+  <thead>
+    <tr>
+      <th scope="col" class="text-center">No</th>
+      <th scope="col" class="text-center">Title</th>
+      <% if books.first.has_key?(:rating) %>
+        <th scope="col" class="text-center">Rating</th>
+      <% else %>
+        <th scope="col" class="text-center">Count</th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% books.each.with_index do |book, index|%>
+      <tr>
+        <td scope="row" class="text-center"><%= index + 1 %></td>
+        <td class="text-center"><%= book[:name] %></td>
+        <% if book.has_key?(:rating) %>
+          <td class="text-center"><%= book[:rating] %></td>
+        <% else %> 
+          <td scope="col" class="text-center"><%= book[:count] %></td>
+        <% end %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

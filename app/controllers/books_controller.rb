@@ -1,6 +1,7 @@
 class BooksController < ApplicationController
     CHECKOUT_RECORD_TYPE = 1
     WISHLIST_RECORD_TYPE = 2
+    
     before_action :required_login
     before_action :required_admin_user, only: [:new, :edit, :update, :create, :destroy]
     before_action :set_book, only: [:edit, :show, :update] 
@@ -25,6 +26,8 @@ class BooksController < ApplicationController
         @wishlist_book_record.shift
         @wishlist_book_record_exist = false
         @wishlist_book_record.each {|key, value| @wishlist_book_record_exist =true if value!=0 }
+
+        @data = [{name: 'checout out', data: @checkout_book_record}, {name: 'wishlist', data: @wishlist_book_record}]
 
         @borrowed_users = checkout_users
         @wishlisted_users = wishlisted_users

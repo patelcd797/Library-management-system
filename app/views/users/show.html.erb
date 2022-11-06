@@ -14,13 +14,13 @@
         <div class="d-flex justify-content-between">
             <% if @checkout_book_record_exist %>
                 <div class= "<%= @wishlist_book_record_exist ? "w-50" : "w-100" %>" >
-                    <%= pie_chart @checkout_book_record, legend: "left" %>
+                    <%= pie_chart @checkout_book_record, legend: "left", library:{animation:{easing: 'easeOutQuad'}} %>
                     <div class="text-center pl-5 ml-5 mt-2">Checkout Books</div>
                 </div>
             <% end %>
             <% if @wishlist_book_record_exist %>
                 <div class= "<%=@checkout_book_record_exist ? "w-50" : "w-100" %>" >
-                    <%= pie_chart @wishlist_book_record, legend: @checkout_book_record.size != 0 ? "none" : "left" %> 
+                    <%= pie_chart @wishlist_book_record, legend: @checkout_book_record.size != 0 ? "none" : "left", library:{animation:{easing: 'easeOutQuad'}} %> 
                     <div class="text-center mt-2">Wishlist Books</div>
                 </div>
             <% end %> 
