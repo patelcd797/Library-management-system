@@ -51,14 +51,12 @@ class UsersController < ApplicationController
 
     def create
         @user  = User.new(user_param)
-        puts @user.contact_number
         if @user.save
             session[:user_id] = @user.id
             flash[:notice] = "User successfully created"
             UserMailer.with(user: @user).welcome_mail.deliver_now
             redirect_to books_path
         else 
-            puts @user.errors.messages
             @message = ""
             if @user.errors.messages[:email].include? "has already been taken"
                 @message = "Email is already in use"
@@ -82,7 +80,6 @@ class UsersController < ApplicationController
                     @message = "Some error occured please try again"
                 end
             end
-            puts @user.errors.messages
             flash[:alert] = @message
             redirect_to signup_path
         end

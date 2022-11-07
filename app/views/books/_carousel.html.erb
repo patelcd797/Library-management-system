@@ -1,0 +1,35 @@
+<div class="d-flex">
+    <div id="carouselExampleControls" class="carousel slide w-100" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <div class="d-flex justify-content-between">
+                <% books.each do |book| %>
+                    <div class="card border-0 shadow rounded-20 bg-light" style="width: 19rem;">
+                        <%= image_tag(book.image, :alt => "rss feed", :class => "card-img-top minh-250") %>
+                        <div class="card-body d-flex flex-column h-400">
+                            <h5 class="card-title book-title"><%= book.title %></h5>
+                            <p class="card-text book-description"><%= book.description %></p>
+                            <div class="flex-shrink-0">
+                                <%= link_to "View details", book, class: "btn btn-primary text-nowrap" %>
+                                <% if current_user.book_borrowed?(book) %>
+                                    <%= link_to "Return a book", checkout_book_path(book), class: "btn btn-warning text-nowrap", method: :delete %>
+                                <% else %>
+                                    <% if book.no_of_books_available > 0 %>
+                                        <%= link_to "Checkout a book", checkout_books_path(book: book), class: "btn btn-success text-nowrap", method: :post %>
+                                    <% else %>
+                                        <% if !current_user.book_reserved?(book) %>
+                                            <%= link_to "Reserve book", reserve_books_path(book: book), class: "btn btn-success text-nowrap", method: :post %>
+                                        <% else %>
+                                            <%= link_to "Unreserve book", reserve_book_path(book), class: "btn btn-danger text-nowrap", method: :delete %>
+                                        <% end %>
+                                    <% end %>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>

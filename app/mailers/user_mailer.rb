@@ -8,7 +8,6 @@ class UserMailer < ApplicationMailer
         )
     end
     def book_is_available
-        puts params[:users] 
         @users = params[:users]
         @book = params[:book]
         emails = @users.collect(&:email).join(",")

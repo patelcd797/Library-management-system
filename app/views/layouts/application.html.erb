@@ -11,8 +11,10 @@
   </head>
 
   <body class="d-flex flex-column bg-light">
-    <%= render 'layouts/navigation' %>
-     <%=  render 'layouts/message' %>
-    <%= yield %>
+    <div class="navbar-container"><%= render 'layouts/navigation' %></div>
+    <div class="content">
+      <%=  render 'layouts/message' %>
+      <%= yield %>
+    </div>
   </body>
 </html>

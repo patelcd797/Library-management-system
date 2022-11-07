@@ -4,13 +4,27 @@ html, body {
   height: 100%;
   background-color: #f7f7f7;
 }
+
+.navbar-container {
+  position: fixed;
+  top: 0;
+  z-index: 5;
+  width: 100%;
+}
+.content {
+  padding-top: 5rem;
+}
 .navbar-collapse {
   flex-grow: 0;
 }
 
+.navbar-title {
+  font-size: 2rem;
+}
 .navbar-title a {
   color: #fff;
 }
+
 
 .flickr_pagination {
   text-align: center;
@@ -74,7 +88,15 @@ html, body {
 }
 
 .search-input {
-  outline: none;
+  &:focus {
+    border-color: inherit;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+  &::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: white;
+    opacity: 1; /* Firefox */
+  }
 }
 
 .welcome-page, .book-details {
@@ -205,6 +227,26 @@ html, body {
   margin: 0;
   &-header {
     position: absolute;
-    
   }
+}
+
+.book-description {
+  text-overflow:ellipsis;
+  overflow:hidden;
+  // Addition lines for 2 line or multiline ellipsis
+  display: -webkit-box !important;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+  flex: 1 0 auto;
+}
+
+.book-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.h-400 {
+  height: 230px;
 }

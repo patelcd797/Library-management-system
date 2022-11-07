@@ -1,8 +1,28 @@
-<div class="container py-5 ">
-    <%= render 'books/search_form' %>
-    <div id="search-books">
-        <%= render 'books/books_result' %>
+<div>
+    <div class="card h-100 bg-dark border-0 rounded-0">
+        <div class="card-body">
+            <div class="d-flex">
+                <h4 class="card-title text-white">Most Popular</h4>
+            </div>
+            <%= render 'books/carousel', books: @popular_books %>
+        </div>
+        <div class="card-body">
+            <div class="d-flex">
+                <h4 class="card-title text-white">Most Trending</h4>
+            </div>
+            <%= render 'books/carousel', books: @tranding_books %>
+        </div>
+        <div class="card-body">
+            <div class="d-flex">
+                <h4 class="card-title text-white">Most Recommended</h4>
+            </div>
+            <%= render 'books/carousel', books: @recommended_books %>
+        </div>
+        <div class="card-body">
+            <div>
+                <h4 class="card-title text-white">Latest Books</h4>
+            </div>
+            <%= render 'books/carousel', books: @books %>
+        </div>
     </div>
 </div>
-
-

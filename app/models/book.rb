@@ -19,10 +19,10 @@ class Book < ApplicationRecord
     def self.search(param)
         if param
             result = where("title like ? OR description like ? OR author like ?", "%#{param}%","%#{param}%","%#{param}%")
-            result if result.size > 0
+            return result if result.size > 0
             all
         else
-            scoped
+            all
         end
     end
 end

@@ -6,7 +6,48 @@ class BooksController < ApplicationController
     before_action :required_admin_user, only: [:new, :edit, :update, :create, :destroy]
     before_action :set_book, only: [:edit, :show, :update] 
     def index
-        @books = Book.paginate(page: params[:page], per_page: 3)
+        @books = Book.paginate(page: params[:page], per_page: 5)
+
+        #popular books
+        @checkout_books = BookRecord.where("record_type = #{CHECKOUT_RECORD_TYPE}")
+        @popular_books_group = @checkout_books.group(:book_id).count
+        @top_popular_books = []
+        @popular_books_group.each { |key,value| 
+            @top_popular_books.push({book: Book.find(key), count: value})
+        }
+        @top_popular_books = @top_popular_books.sort_by {|obj| obj.count}
+        @top_popular_books = @top_popular_books[0, [@top_popular_books.size, 5].min]
+        @popular_books = @top_popular_books.pluck(:book)
+
+        #tranding books 
+        @rated_books = Feedback.all
+        @tranding_books_rating_avg = @rated_books.group(:book_id).average(:rating)
+
+        @top_tranding_books = []
+        @tranding_books_rating_avg.each do |book_id, rating|
+            @top_tranding_books.push({book: Book.find(book_id), rating: rating})
+        end 
+        @top_tranding_books = @top_tranding_books.sort_by { |book| book.count }
+        @top_tranding_books = @top_tranding_books[0, [@top_tranding_books.size, 5].min]
+        @tranding_books = @top_tranding_books.pluck(:book)
+
+        # recommended books
+        @recommended_books = Feedback.all.where("recommended=#{true}")
+        @recommended_books_group = @recommended_books.group(:book_id).count
+
+        @top_recommended_books = []
+        @recommended_books_group.each do |book_id, count|
+            @top_recommended_books.push({book: Book.find(book_id), count: count})
+        end 
+        @top_recommended_books = @top_recommended_books.sort_by { |book| book.count }
+        @top_recommended_books = @top_recommended_books[0, [@top_recommended_books.size, 5].min]
+        @recommended_books = @top_recommended_books.pluck(:book)
+       
+        # Latest books 
+        @latest_books = Book.where("created_at >= ?", Time.now.prev_year.next_month.at_beginning_of_month).sort_by.sort_by {|obj| obj.created_at}
+        @latest_books.reverse!
+        @latest_books[0,[@latest_books.size, 5].min]
+        
     end
 
     def new
@@ -33,15 +74,24 @@ class BooksController < ApplicationController
         @wishlisted_users = wishlisted_users
     end
 
-    def search 
+    def search_book 
         search = params[:search][:search]
         search.strip!
-        @books = Book.search(search).paginate(page: params[:page], per_page: 3)
         
-        respond_to do |format|
-            format.js { render 'books/results'}
-            format.html { render new_book_path }
+        if params[:search][:search_page] == "true"
+            @books = Book.search(search)
+            
+            respond_to do |format|
+                format.js { render 'books/results'}
+                format.html { render new_book_path }
+            end
+        else 
+            redirect_to search_path(search: search)
         end
+    end
+
+    def search
+        @books = @books = Book.search(params[:search])
     end
 
     def create
@@ -119,7 +169,6 @@ class BooksController < ApplicationController
         @users_list = []
         @book.users.each { |user|
             checkout_book = CheckoutBook.find_by(user_id: user.id, book_id: @book.id)
-            puts checkout_book.checkout_date 
             borrow_user = { first_name: user.first_name, last_name: user.last_name, 
                             checkout_date: checkout_book.checkout_date, 
                             return_date: checkout_book.return_date

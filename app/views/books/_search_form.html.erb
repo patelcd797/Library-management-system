@@ -1,7 +1,8 @@
-<%= form_for :search, url: search_path, remote: true, method: :get do |f| %>
-    <div class="d-flex m-2">
-        <%= f.text_field :search, placeholder: "Search book", class: "search-input form-control rounded-left rounded-right-0" %>
-        <%= button_tag type: :submit, class: "btn btn-primary m-auto rounded-left-0 rounded-right" do %>
+<%= form_for :search, url: search_book_path, remote: current_page?('/search') ? true : false , method: :get do |f| %>
+    <div class="d-flex">
+        <%= f.hidden_field :search_page, value: current_page?('/search') %>
+        <%= f.text_field :search, placeholder: "Search book", class: "form-control bg-dark text-white border-0 search-input " %>
+        <%= button_tag type: :submit, class: "bg-dark text-white border-0 m-auto" do %>
             <i class="fa fa-search" aria-hidden="true"></i>
         <% end %>
     </div>
