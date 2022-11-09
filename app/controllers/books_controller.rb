@@ -90,6 +90,8 @@ class BooksController < ApplicationController
         elsif filter == 'latest'
             @title = "Most Latest Books"
             @books = latest_books(false)
+        else 
+            @books.all
         end
     end
 
