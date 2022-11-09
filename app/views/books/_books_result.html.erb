@@ -1,3 +1,7 @@
+<% if !@search_match_found %>
+    <h3 class="mb-0">There are no results that match your search</h3>
+    <p class="mb-4">Below are top recommended books</p>
+<% end %>
 <% @books.each do |book| %>
     <%= render 'books/book_card', book: book %>
 <% end %>

@@ -1,28 +1,32 @@
 <div>
-    <div class="card h-100 bg-dark border-0 rounded-0">
-        <div class="card-body">
-            <div class="d-flex">
-                <h4 class="card-title text-white">Most Popular</h4>
+    <div class="card h-100 bg-light border-0 rounded-0">
+        <div class="card-body pb-0 mt-2 bg-light">
+            <div class="d-flex justify-content-between">
+                <h4 class="card-title ml-4 bg-light">Most Popular</h4>
+                <%= link_to(books_filter_path(filter: 'most-popular'), class: "icon-style pr-3") do %><i class="fa-solid fa-greater-than mr-5 mr-5"></i> <% end %>
             </div>
             <%= render 'books/carousel', books: @popular_books %>
         </div>
-        <div class="card-body">
-            <div class="d-flex">
-                <h4 class="card-title text-white">Most Trending</h4>
+        <div class="card-body pb-0 bg-light">
+            <div class="d-flex justify-content-between">
+                <h4 class="card-title ml-4 bg-light">Most Favourite</h4>
+                <%= link_to(books_filter_path(filter: 'most-favourite'), class: "icon-style pr-3") do %><i class="fa-solid fa-greater-than mr-5"></i> <% end %>
             </div>
-            <%= render 'books/carousel', books: @tranding_books %>
+            <%= render 'books/carousel', books: @favourite_books %>
         </div>
-        <div class="card-body">
-            <div class="d-flex">
-                <h4 class="card-title text-white">Most Recommended</h4>
+        <div class="card-body pb-0 bg-light">
+            <div class="d-flex justify-content-between">
+                <h4 class="card-title ml-4 bg-light">Most Recommended</h4>
+                <%= link_to(books_filter_path(filter: 'most-recommended'), class: "icon-style pr-3") do %><i class="fa-solid fa-greater-than mr-5"></i> <% end %>
             </div>
             <%= render 'books/carousel', books: @recommended_books %>
         </div>
-        <div class="card-body">
-            <div>
-                <h4 class="card-title text-white">Latest Books</h4>
+        <div class="card-body pb-0 bg-light">
+            <div class="d-flex justify-content-between">
+                <h4 class="card-title ml-4 bg-light">Latest Books</h4>
+                <%= link_to(books_filter_path(filter: 'latest'), class: "icon-style pr-3") do %><i class="fa-solid fa-greater-than mr-5"></i> <% end %>
             </div>
-            <%= render 'books/carousel', books: @books %>
+            <%= render 'books/carousel', books: @latest_books %>
         </div>
     </div>
 </div>

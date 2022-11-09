@@ -6,47 +6,17 @@ class BooksController < ApplicationController
     before_action :required_admin_user, only: [:new, :edit, :update, :create, :destroy]
     before_action :set_book, only: [:edit, :show, :update] 
     def index
-        @books = Book.paginate(page: params[:page], per_page: 5)
-
         #popular books
-        @checkout_books = BookRecord.where("record_type = #{CHECKOUT_RECORD_TYPE}")
-        @popular_books_group = @checkout_books.group(:book_id).count
-        @top_popular_books = []
-        @popular_books_group.each { |key,value| 
-            @top_popular_books.push({book: Book.find(key), count: value})
-        }
-        @top_popular_books = @top_popular_books.sort_by {|obj| obj.count}
-        @top_popular_books = @top_popular_books[0, [@top_popular_books.size, 5].min]
-        @popular_books = @top_popular_books.pluck(:book)
-
-        #tranding books 
-        @rated_books = Feedback.all
-        @tranding_books_rating_avg = @rated_books.group(:book_id).average(:rating)
-
-        @top_tranding_books = []
-        @tranding_books_rating_avg.each do |book_id, rating|
-            @top_tranding_books.push({book: Book.find(book_id), rating: rating})
-        end 
-        @top_tranding_books = @top_tranding_books.sort_by { |book| book.count }
-        @top_tranding_books = @top_tranding_books[0, [@top_tranding_books.size, 5].min]
-        @tranding_books = @top_tranding_books.pluck(:book)
-
+        @popular_books = popular_books(true) 
+        
+        #favourite books 
+        @favourite_books = favourite_books(true)
+        
         # recommended books
-        @recommended_books = Feedback.all.where("recommended=#{true}")
-        @recommended_books_group = @recommended_books.group(:book_id).count
-
-        @top_recommended_books = []
-        @recommended_books_group.each do |book_id, count|
-            @top_recommended_books.push({book: Book.find(book_id), count: count})
-        end 
-        @top_recommended_books = @top_recommended_books.sort_by { |book| book.count }
-        @top_recommended_books = @top_recommended_books[0, [@top_recommended_books.size, 5].min]
-        @recommended_books = @top_recommended_books.pluck(:book)
+        @recommended_books = recommended_books(true)
        
         # Latest books 
-        @latest_books = Book.where("created_at >= ?", Time.now.prev_year.next_month.at_beginning_of_month).sort_by.sort_by {|obj| obj.created_at}
-        @latest_books.reverse!
-        @latest_books[0,[@latest_books.size, 5].min]
+        @latest_books = latest_books(true)
         
     end
 
@@ -58,12 +28,12 @@ class BooksController < ApplicationController
     end
 
     def show
-        @checkout_book_record = BookRecord.where("book_id=#{@book.id} AND record_type=#{CHECKOUT_RECORD_TYPE}").group_by_month(:created_at, format: "%b %y", range: Time.now.prev_year.next_month.at_beginning_of_month..Time.now).count
+        @checkout_book_record = BookRecord.where("book_id=#{@book.id} AND record_type=#{CHECKOUT_RECORD_TYPE}").group_by_month(:created_at, format: "%b %y", range: 6.months.ago.at_beginning_of_month..Time.now).count
         @checkout_book_record.shift
         @checkout_book_record_exist = false
         @checkout_book_record.each {|key, value| @checkout_book_record_exist =true if value!=0 }
 
-        @wishlist_book_record = BookRecord.where("book_id=#{@book.id} AND record_type=#{WISHLIST_RECORD_TYPE}").group_by_month(:created_at, format: "%b %y", range: Time.now.prev_year.next_month.at_beginning_of_month..Time.now).count
+        @wishlist_book_record = BookRecord.where("book_id=#{@book.id} AND record_type=#{WISHLIST_RECORD_TYPE}").group_by_month(:created_at, format: "%b %y", range: 6.months.ago.at_beginning_of_month..Time.now).count
         @wishlist_book_record.shift
         @wishlist_book_record_exist = false
         @wishlist_book_record.each {|key, value| @wishlist_book_record_exist =true if value!=0 }
@@ -80,7 +50,11 @@ class BooksController < ApplicationController
         
         if params[:search][:search_page] == "true"
             @books = Book.search(search)
-            
+            @search_match_found = true
+            if @books.size == 0 
+                @search_match_found = false
+                @books = recommended_books(false)
+            end
             respond_to do |format|
                 format.js { render 'books/results'}
                 format.html { render new_book_path }
@@ -91,7 +65,32 @@ class BooksController < ApplicationController
     end
 
     def search
-        @books = @books = Book.search(params[:search])
+        @books = Book.search(params[:search])
+        @search_match_found = true
+        if @books.size == 0 
+            @search_match_found = false
+            @books = recommended_books(false)
+        end
+    end
+
+    def filter
+        @search_match_found = true
+        @books = []
+        @title = ""
+        filter = params[:filter]
+        if filter == "most-popular"
+            @title = "Most Popular Books"
+            @books = popular_books(false)
+        elsif filter == "most-favourite"
+            @title = "Most Favourite Books"
+            @books = favourite_books(false)
+        elsif filter == "most-recommended"
+            @title = "Most Recommended Books"
+            @books = recommended_books(false)
+        elsif filter == 'latest'
+            @title = "Most Latest Books"
+            @books = latest_books(false)
+        end
     end
 
     def create
@@ -188,5 +187,52 @@ class BooksController < ApplicationController
             @list.push(wishlisted_user)
         }
         @list
+    end
+
+    def popular_books(limit)
+        #popular books
+        @checkout_books = BookRecord.where("record_type = #{CHECKOUT_RECORD_TYPE}")
+        @popular_books_group = @checkout_books.group(:book_id).count
+        @top_popular_books = []
+        @popular_books_group.each { |key,value| 
+            @top_popular_books.push({book: Book.find(key), count: value})
+        }
+        @top_popular_books = @top_popular_books.sort_by {|obj| obj.count}
+        @top_popular_books = @top_popular_books[0, limit ? [@top_popular_books.size, 5].min : @top_popular_books.size]
+        @popular_books = @top_popular_books.pluck(:book)
+    end
+
+    def favourite_books(limit)
+        #favourite books 
+        @rated_books = Feedback.all
+        @tranding_books_rating_avg = @rated_books.group(:book_id).average(:rating)
+
+        @top_tranding_books = []
+        @tranding_books_rating_avg.each do |book_id, rating|
+            @top_tranding_books.push({book: Book.find(book_id), rating: rating})
+        end 
+        @top_tranding_books = @top_tranding_books.sort_by { |book| book.count }
+        @top_tranding_books = @top_tranding_books[0, limit ? [@top_tranding_books.size, 5].min : @top_tranding_books.size] 
+        @tranding_books = @top_tranding_books.pluck(:book)
+    end
+
+    def recommended_books(limit)
+        # recommended books
+        @recommended_books = Feedback.all.where("recommended=#{true}")
+        @recommended_books_group = @recommended_books.group(:book_id).count
+
+        @top_recommended_books = []
+        @recommended_books_group.each do |book_id, count|
+            @top_recommended_books.push({book: Book.find(book_id), count: count})
+        end 
+        @top_recommended_books = @top_recommended_books.sort_by { |book| book.count }
+        @top_recommended_books = @top_recommended_books[0, limit ? [@top_recommended_books.size, 5].min : @top_recommended_books.size] 
+        @recommended_books = @top_recommended_books.pluck(:book)
+    end
+
+    def latest_books(limit)
+        @latest_books = Book.where("created_at >= ?", 6.months.ago.at_beginning_of_month).sort_by.sort_by {|obj| obj.created_at}
+        @latest_books.reverse!
+        @latest_books[0, limit ? [@latest_books.size, 5].min : @latest_books.size] 
     end
 end

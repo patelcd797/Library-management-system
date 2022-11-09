@@ -12,19 +12,21 @@ class UsersController < ApplicationController
     def index
         @users = User.all 
     end
+
     def show
-        @checkout_book_record = UserRecord.where("user_id=#{@user.id} AND record_type=#{CHECKOUT_RECORD_TYPE}").group_by_month(:created_at, format: "%b %y", range: Time.now.prev_year.next_month.at_beginning_of_month..Time.now).count
+        @checkout_book_record = UserRecord.where("user_id=#{@user.id} AND record_type=#{CHECKOUT_RECORD_TYPE}").group_by_month(:created_at, format: "%b %y", range: 6.months.ago.at_beginning_of_month..Time.now).count
         @checkout_book_record.shift
         @checkout_book_record_exist = false
         @checkout_book_record.each {|key, value| @checkout_book_record_exist =true if value!=0 }
 
-        @wishlist_book_record = UserRecord.where("user_id=#{@user.id} AND record_type=#{WISHLIST_RECORD_TYPE}").group_by_month(:created_at, format: "%b %y", range: Time.now.prev_year.next_month.at_beginning_of_month..Time.now).count
+        @wishlist_book_record = UserRecord.where("user_id=#{@user.id} AND record_type=#{WISHLIST_RECORD_TYPE}").group_by_month(:created_at, format: "%b %y", range: 6.months.ago.at_beginning_of_month..Time.now).count
         @wishlist_book_record.shift
         @wishlist_book_record_exist = false
         @wishlist_book_record.each {|key, value| @wishlist_book_record_exist =true if value!=0 }
 
         @borrowed_books = borrowed_book
         @wishlisted_books = wishlisted_books
+        @data = [{name: 'checouted out books', data: @checkout_book_record}, {name: 'wishlisted book', data: @wishlist_book_record}]
     end
 
     def new
@@ -51,9 +53,11 @@ class UsersController < ApplicationController
 
     def create
         @user  = User.new(user_param)
-        if @user.save
+        if params[:user][:password] != params[:user][:confirm_password]
+            flash[:alert] = "password and confirm password is not same"
+            render 'users/new'
+        elsif @user.save
             session[:user_id] = @user.id
-            flash[:notice] = "User successfully created"
             UserMailer.with(user: @user).welcome_mail.deliver_now
             redirect_to books_path
         else 
@@ -85,9 +89,11 @@ class UsersController < ApplicationController
         end
     end
 
-
     def update 
-        if @user.update(user_param)
+        if params[:user][:password] != params[:user][:confirm_password]
+            flash[:alert] = "password and confirm password is not same"
+            render 'users/edit'
+        elsif @user.update(user_param)
             flash[:notice] = "User information updated successfully"
             redirect_to @user
         else 

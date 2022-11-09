@@ -7,7 +7,6 @@ class SessionController < ApplicationController
 
         if user && user.authenticate(params[:session][:password])
             session[:user_id] = user.id
-            flash[:notice] = "Login successfully"
             redirect_to books_path
         else 
             flash[:alert] = "User name and password not matches"

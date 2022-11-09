@@ -5,9 +5,9 @@
             <%= image_tag(@book.image, :alt => "rss feed", :class => "card-img-top minh-250 minw-200") %>
             <div class="card-body pb-0">
                 <p class="card-text mb-1"><%= @book.description%></p>
-                <p class="card-text mb-1">Author: <%= @book.author%></p>
-                <p class="card-text mb-1">Price: <%= @book.price %></p>
-                <p class="card-text mb-1">No of Books: <%= @book.no_of_books %> / Available: <%= @book.no_of_books_available %> </p>
+                <p class="card-text mb-1"><strong>Author:</strong> <%= @book.author%></p>
+                <p class="card-text mb-1"><strong>Price:</strong> <%= @book.price %></p>
+                <p class="card-text mb-1"><strong>No of Books:</strong> <%= @book.no_of_books %> / Available: <%= @book.no_of_books_available %> </p>
                 <p class="card-text mt-2">
                     <% if current_user.book_borrowed?(@book) %>
                         <%= link_to "Return a book", checkout_book_path(@book), class: "btn btn-warning text-nowrap", method: :delete %>
@@ -36,25 +36,28 @@
             <% if !@checkout_book_record_exist && !@wishlist_book_record_exist && @borrowed_users.size == 0 && @wishlisted_users.size == 0 %>
             <div class="book-details">
                 <div class="card-body position-relative text-center">
-                    <h2 class="my-2 text-capitalize welcome-page-header book-details-header">no data available</h2>
+                    <h2 class="my-2 text-capitalize welcome-page-header book-details-header">no feedbacks available</h2>
                 </div>
             </div>
             <% else %>
                 <div class="d-flex mt-4 justify-content-between">
                     <% if @checkout_book_record_exist %>
                         <div class= "<%= @wishlist_book_record_exist ? "w-50" : "w-100" %>" >
-                            <%= pie_chart @checkout_book_record, legend: "left", library:{animation:{easing: 'easeOutQuad'}} %>
+                            <%= pie_chart @checkout_book_record, legend: "left", library:{animation:{easing: 'easeOutQuad'}}, height: "250px" %>
                             <div class="text-center pl-5 ml-5 mt-2">Checkout Books</div>
                         </div>
                     <% end %>
                     <% if @wishlist_book_record_exist %>
                         <div class= "<%=@checkout_book_record_exist ? "w-50" : "w-100" %>" >
-                            <%= pie_chart @wishlist_book_record, legend: @checkout_book_record.size != 0 ? "none" : "left", library:{animation:{easing: 'easeOutQuad'}} %> 
+                            <%= pie_chart @wishlist_book_record, legend: @checkout_book_record.size != 0 ? "none" : "left", library:{animation:{easing: 'easeOutQuad'}}, height: "250px" %> 
                             <div class="text-center mt-2">Wishlist Books</div>
                         </div>
                     <% end %> 
                 </div>
-                <div class="container w-75 text-center my-5"><%= line_chart @data %></div>
+                <div class="container w-75 text-center my-5">
+                    <h5 class="card-title text-capitalize">checkedout books vs wishlisted book</h5>
+                    <%= line_chart @data %>
+                </div>
                 <% if @borrowed_users.size > 0 %>
                     <div class="card-body">
                         <h5 class="card-title">Book check out users</h5>
@@ -79,7 +82,7 @@
             <% else %>
                 <div class="book-details">
                     <div class="card-body position-relative text-center">
-                        <h2 class="my-2 text-capitalize welcome-page-header book-details-header">no data available</h2>
+                        <h2 class="my-2 text-capitalize welcome-page-header book-details-header">no feedbacks available</h2>
                     </div>
                 </div>
             <% end %>

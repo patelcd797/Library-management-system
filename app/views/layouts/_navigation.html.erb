@@ -4,8 +4,10 @@
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse " id="navbarSupportedContent">
-    <div class="border-bottom border-primary mx-2"><%= render 'books/search_form' %></div>
+  <div class="collapse navbar-collapse mr-3" id="navbarSupportedContent">
+    <% if logged_in?%>
+      <div class="border-bottom border-primary mx-2"><%= render 'books/search_form' %></div>
+    <% end %>
     <ul class="navbar-nav mr-auto">
       <% if logged_in? %>
         <li class="nav-item dropdown">
@@ -16,13 +18,12 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <%= link_to "View Profile", current_user, class: "dropdown-item" %>
             <%= link_to "Edit Profile", edit_user_path(current_user), class: "dropdown-item" %>
-            <%=  link_to "Checkout books", users_checkout_path, class: "dropdown-item" %>
+            <%=  link_to "Checkedout books", users_checkout_path, class: "dropdown-item" %>
             <% if current_user.admin? %>
               <%= link_to "View all users", users_path, class: "dropdown-item" %>
               <%= link_to "View analysis", analysis_path, class: "dropdown-item" %>
               <%= link_to "Add a book", new_book_path, class: "dropdown-item" %>
             <% end %>
-            <%= link_to "Cancel membership", user_path(current_user), class: " dropdown-item text-danger", data: {confirm: "are you sure you want cancel membership?"}, method: :delete %>
             <%= link_to "Logout", logout_path, class: "dropdown-item", method: :delete %>
           </div>
         </li>

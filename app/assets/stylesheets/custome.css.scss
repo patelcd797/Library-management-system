@@ -11,8 +11,25 @@ html, body {
   z-index: 5;
   width: 100%;
 }
+
+.shadow-all {
+  box-shadow: 0px 2px 20px 10px black; /*any color you want*/
+}
 .content {
+  height: 100%;
   padding-top: 5rem;
+}
+
+.size-400 {
+  min-height: 300px;
+  max-height: 300px;
+  min-width: 400px;
+  max-width: 400px;
+}
+.sign-up-button {
+  position: absolute;
+  bottom: 30px;
+  transform: translateX(-50%);
 }
 .navbar-collapse {
   flex-grow: 0;
@@ -24,7 +41,6 @@ html, body {
 .navbar-title a {
   color: #fff;
 }
-
 
 .flickr_pagination {
   text-align: center;
@@ -106,6 +122,10 @@ html, body {
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
+}
+
+.welcome-page {
+  margin-top: 5%;
 }
 
 .welcome-page-header {
@@ -249,4 +269,9 @@ html, body {
 
 .h-400 {
   height: 230px;
+}
+
+.icon-style {
+  font-size: 1.5rem;
+  color: black;
 }

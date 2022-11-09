@@ -6,11 +6,11 @@ class AnalysisController < ApplicationController
 
     def index
 
-        @books_record_since_one_year = BookRecord.where("created_at >= ?", Time.now.prev_year.next_month.at_beginning_of_month)
+        @books_record_since_one_year = BookRecord.where("created_at >= ?", 6.months.ago.at_beginning_of_month)
         
         # checkout books
         @checkout_books = @books_record_since_one_year.where("record_type = #{CHECKOUT_RECORD_TYPE}")
-        @checkout_book_record = @checkout_books.group_by_month(:created_at, format: "%b %y", range: Time.now.prev_year.next_month.at_beginning_of_month..Time.now).count
+        @checkout_book_record = @checkout_books.group_by_month(:created_at, format: "%b %y", range: 6.months.ago.at_beginning_of_month..Time.now).count
         @checkout_book_record.shift
         @checkout_book_record_exist = false
 
@@ -26,7 +26,7 @@ class AnalysisController < ApplicationController
 
         # wishlist books
         @wishlist_books = @books_record_since_one_year.where("record_type = #{WISHLIST_RECORD_TYPE}")
-        @wishlist_book_record = @wishlist_books.group_by_month(:created_at, format: "%b %y", range: Time.now.prev_year.next_month.at_beginning_of_month..Time.now).count
+        @wishlist_book_record = @wishlist_books.group_by_month(:created_at, format: "%b %y", range: 6.months.ago.at_beginning_of_month..Time.now).count
 
         @wishlist_book_record.shift
         @wishlist_book_record_exist = false
@@ -46,7 +46,7 @@ class AnalysisController < ApplicationController
         @books_data = [{name: 'checout out', data: @checkout_book_record}, {name: 'wishlist', data: @wishlist_book_record}]
 
         # recommended books
-        @feedbacks_record_since_one_year = Feedback.where("created_at >= ?", Time.now.prev_year.next_month.at_beginning_of_month)
+        @feedbacks_record_since_one_year = Feedback.where("created_at >= ?", 6.months.ago.at_beginning_of_month)
 
         @recommended_books = @feedbacks_record_since_one_year.where("recommended=#{true}")
         @recommended_books_group = @recommended_books.group(:book_id).count
@@ -70,11 +70,11 @@ class AnalysisController < ApplicationController
         @top_rated_books = @top_rated_books[0, [@top_rated_books.size, 5].min]
 
 
-        @users_record_since_one_year = UserRecord.where("created_at >= ?", Time.now.prev_year.next_month.at_beginning_of_month)
+        @users_record_since_one_year = UserRecord.where("created_at >= ?", 6.months.ago.at_beginning_of_month)
         
         #most checkout users
         @checkout_users = @users_record_since_one_year.where("record_type = #{CHECKOUT_RECORD_TYPE}")
-        @checkout_user_record = @checkout_users.group_by_month(:created_at, format: "%b %y", range: Time.now.prev_year.next_month.at_beginning_of_month..Time.now).count
+        @checkout_user_record = @checkout_users.group_by_month(:created_at, format: "%b %y", range: 6.months.ago.at_beginning_of_month..Time.now).count
         @checkout_user_record.shift
         @checkout_user_record_exist = false
 
@@ -90,7 +90,7 @@ class AnalysisController < ApplicationController
         
         # wishlist books
         @wishlist_users = @users_record_since_one_year.where("record_type = #{WISHLIST_RECORD_TYPE}")
-        @wishlist_user_record = @wishlist_users.group_by_month(:created_at, format: "%b %y", range: Time.now.prev_year.next_month.at_beginning_of_month..Time.now).count
+        @wishlist_user_record = @wishlist_users.group_by_month(:created_at, format: "%b %y", range: 6.months.ago.at_beginning_of_month..Time.now).count
 
         @wishlist_user_record.shift
         @wishlist_user_record_exist = false

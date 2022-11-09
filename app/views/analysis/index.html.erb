@@ -4,18 +4,21 @@
         <div class="card-body">
             <h5 class="card-title text-capitalize">Most Checkouts books</h5>
             <div class="d-flex">
-                <%= pie_chart @checkout_book_record, width: '50%', library:{animation:{easing: 'easeOutQuad'}} %>
+                <%= pie_chart @checkout_book_record, width: '50%', library:{animation:{easing: 'easeOutQuad'}}, height: "250px" %>
                 <%=  render 'analysis/table', books: @top_checkout_books, width: "50" %>
             </div>
         </div>
         <div class="card-body">
             <h5 class="card-title text-capitalize">Most wishlist books</h5>
             <div class="d-flex">
-                <%= pie_chart @wishlist_book_record, width: '50%', library:{animation:{easing: 'easeOutQuad'}} %>
+                <%= pie_chart @wishlist_book_record, width: '50%', library:{animation:{easing: 'easeOutQuad'}}, height: "250px" %>
                 <%=  render 'analysis/table', books: @top_wishlist_books, width: "50" %>
             </div>
         </div>
-        <div class="container w-75 my-5 text-center"><%= line_chart @books_data %></div>
+        <div class="container w-75 my-5 text-center">
+            <h5 class="card-title text-capitalize">checkedout books vs wishlisted book</h5>
+            <%= line_chart @books_data %>
+        </div>
         <h1 class="my-3 text-capitalize px-3">users analysis page</h1>
         <div class="card-body d-flex">
             <div class="w-50 mr-2">
@@ -30,18 +33,21 @@
         <div class="card-body">
             <h5 class="card-title text-capitalize">Most Checkouts books users</h5>
             <div class="d-flex">
-                <%= pie_chart @checkout_user_record, width: '50%', library:{animation:{easing: 'easeOutQuad'}} %>
+                <%= pie_chart @checkout_user_record, width: '50%', library:{animation:{easing: 'easeOutQuad'}}, height: "250px" %>
                 <%=  render 'analysis/table', books: @top_checkout_users, width: "50" %>
             </div>
         </div>
         <div class="card-body">
             <h5 class="card-title text-capitalize">Most Wishlisted books users</h5>
             <div class="d-flex">
-                <%= pie_chart @wishlist_user_record, width: '50%', library:{animation:{easing: 'easeOutQuad'}} %>
+                <%= pie_chart @wishlist_user_record, width: '50%', library:{animation:{easing: 'easeOutQuad'}}, height: "250px" %>
                 <%=  render 'analysis/table', books: @top_wishlist_users, width: "50" %>
             </div>
         </div>
-        <div class="container w-75 my-5 text-center"><%= line_chart @users_data %></div>
+        <div class="container w-75 my-5 text-center">
+            <h5 class="card-title text-capitalize">users checkedout books vs wishlisted book</h5>
+            <%= line_chart @users_data %>
+        </div>
     </div>
 </div>
 

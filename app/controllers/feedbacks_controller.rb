@@ -1,8 +1,7 @@
 class FeedbacksController < ApplicationController
     before_action :required_login 
     def new 
-        @book_id = params[:book]
-        
+        @book_id = params[:book] 
     end 
 
     def create
@@ -10,6 +9,7 @@ class FeedbacksController < ApplicationController
         @feedback.user_name = current_user.full_name
         @feedback.book_id = params[:feedbacks][:book_id].to_i
         @feedback.recommended = params[:feedbacks][:recommended].to_i == 1 ? true : false
+        puts @feedback.book_id
         if @feedback.save
             redirect_to books_path
         else

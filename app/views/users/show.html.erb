@@ -1,41 +1,47 @@
-<div class="d-flex flex-column m-4">
-    <div class="d-flex my-2">
-        <%= image_tag(@user.image, :alt => "rss feed", :class => "card-img-top w-25") %>
-        <div class="ml-4">
-            <h1><%= @user.full_name %></h1>
-            <div class="my-1"><i class="fa-solid fa-envelope"></i> <%= @user.email %></div>
-            <div class="my-1"> <i class="fa-solid fa-square-phone"></i> <%= @user.contact_number.to_s %></div>
+<div class="container py-5">
+    <div class="card h-100 px-3">
+        <h1 class="my-3 text-capitalize"><%= @user.full_name %></h1>
+        <div class="d-flex my-2">
+            <%= image_tag(@user.image, :alt => "rss feed", :class => "card-img-top minw-200 minh-250") %>
+            <div class="ml-4">
+                <div class="my-1"><i class="fa-solid fa-envelope"></i> <%= @user.email %></div>
+                <div class="my-1"> <i class="fa-solid fa-square-phone"></i> <%= @user.contact_number.to_s %></div>
+            </div>
         </div>
-    </div>
-    <% if current_user.admin %>
-        <% if @checkout_book_record_exist || @wishlist_book_record_exist %>
-            <h5 class="card-title  mt-4">Book Analysis</h5>
-        <% end %>
-        <div class="d-flex justify-content-between">
-            <% if @checkout_book_record_exist %>
-                <div class= "<%= @wishlist_book_record_exist ? "w-50" : "w-100" %>" >
-                    <%= pie_chart @checkout_book_record, legend: "left", library:{animation:{easing: 'easeOutQuad'}} %>
-                    <div class="text-center pl-5 ml-5 mt-2">Checkout Books</div>
-                </div>
+        <% if current_user.admin %>
+            <% if @checkout_book_record_exist || @wishlist_book_record_exist %>
+                <h5 class="card-title  mt-4">Book Analysis</h5>
             <% end %>
-            <% if @wishlist_book_record_exist %>
-                <div class= "<%=@checkout_book_record_exist ? "w-50" : "w-100" %>" >
-                    <%= pie_chart @wishlist_book_record, legend: @checkout_book_record.size != 0 ? "none" : "left", library:{animation:{easing: 'easeOutQuad'}} %> 
-                    <div class="text-center mt-2">Wishlist Books</div>
-                </div>
-            <% end %> 
-        </div>
-    <% end %>
-    <% if @borrowed_books.size > 0  %>
-        <div class="d-flex flex-column my-2">
-            <h5>Check-out books</h5>
-            <%= render 'books/books_list', books: @borrowed_books %>
-        </div>
-    <% end %>
-    <% if @wishlisted_books.size > 0 %>
-        <div class="d-flex flex-column my-2">
-            <h5>Wish list books</h5>
-            <%= render 'books/books_list', books: @wishlisted_books  %>
-        </div>
-    <% end %>
+            <div class="d-flex justify-content-between">
+                <% if @checkout_book_record_exist %>
+                    <div class= "<%= @wishlist_book_record_exist ? "w-50" : "w-100" %>" >
+                        <%= pie_chart @checkout_book_record, legend: "left", library:{animation:{easing: 'easeOutQuad'}}, height: "250px" %>
+                        <div class="text-center pl-5 ml-5 mt-2">Checkout Books</div>
+                    </div>
+                <% end %>
+                <% if @wishlist_book_record_exist %>
+                    <div class= "<%=@checkout_book_record_exist ? "w-50" : "w-100" %>" >
+                        <%= pie_chart @wishlist_book_record, legend: @checkout_book_record.size != 0 ? "none" : "left", library:{animation:{easing: 'easeOutQuad'}}, height: "250px" %> 
+                        <div class="text-center mt-2">Wishlist Books</div>
+                    </div>
+                <% end %> 
+            </div>
+            <div class="container w-75 text-center my-5">
+                <h5 class="card-title text-capitalize">checkedout books vs wishlisted book</h5>
+                <%= line_chart @data %>
+            </div>
+        <% end %>
+        <% if @borrowed_books.size > 0  %>
+            <div class="d-flex flex-column my-2">
+                <h5>Check-out books</h5>
+                <%= render 'books/books_list', books: @borrowed_books %>
+            </div>
+        <% end %>
+        <% if @wishlisted_books.size > 0 %>
+            <div class="d-flex flex-column my-2">
+                <h5>Wish list books</h5>
+                <%= render 'books/books_list', books: @wishlisted_books  %>
+            </div>
+        <% end %>
+    </div>
 </div>
