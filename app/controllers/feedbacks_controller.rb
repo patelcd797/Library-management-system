@@ -9,12 +9,13 @@ class FeedbacksController < ApplicationController
         @feedback.user_name = current_user.full_name
         @feedback.book_id = params[:feedbacks][:book_id].to_i
         @feedback.recommended = params[:feedbacks][:recommended].to_i == 1 ? true : false
+        puts params
         puts @feedback.book_id
         if @feedback.save
             redirect_to books_path
         else
             flash[:alert] = "comments and rating is required"
-            render 'feedbacks/new'
+            render "feedbacks/new"
         end 
     end
 

@@ -91,8 +91,10 @@ class BooksController < ApplicationController
             @title = "Most Latest Books"
             @books = latest_books(false)
         else 
-            @books.all
+            @books= Book.all
         end
+
+        @books = Book.all
     end
 
     def create
@@ -199,7 +201,7 @@ class BooksController < ApplicationController
         @popular_books_group.each { |key,value| 
             @top_popular_books.push({book: Book.find(key), count: value})
         }
-        @top_popular_books = @top_popular_books.sort_by {|obj| obj.count}
+        @top_popular_books = @top_popular_books.sort_by {|obj| obj[:count]}.reverse
         @top_popular_books = @top_popular_books[0, limit ? [@top_popular_books.size, 5].min : @top_popular_books.size]
         @popular_books = @top_popular_books.pluck(:book)
     end
@@ -211,9 +213,9 @@ class BooksController < ApplicationController
 
         @top_tranding_books = []
         @tranding_books_rating_avg.each do |book_id, rating|
-            @top_tranding_books.push({book: Book.find(book_id), rating: rating})
+            @top_tranding_books.push({book: Book.find(book_id), rating: rating.round(2) })
         end 
-        @top_tranding_books = @top_tranding_books.sort_by { |book| book.count }
+        @top_tranding_books = @top_tranding_books.sort_by { |book| book[:rating] }.reverse
         @top_tranding_books = @top_tranding_books[0, limit ? [@top_tranding_books.size, 5].min : @top_tranding_books.size] 
         @tranding_books = @top_tranding_books.pluck(:book)
     end
@@ -227,13 +229,13 @@ class BooksController < ApplicationController
         @recommended_books_group.each do |book_id, count|
             @top_recommended_books.push({book: Book.find(book_id), count: count})
         end 
-        @top_recommended_books = @top_recommended_books.sort_by { |book| book.count }
+        @top_recommended_books = @top_recommended_books.sort_by { |book| book[:count] }.reverse
         @top_recommended_books = @top_recommended_books[0, limit ? [@top_recommended_books.size, 5].min : @top_recommended_books.size] 
         @recommended_books = @top_recommended_books.pluck(:book)
     end
 
     def latest_books(limit)
-        @latest_books = Book.where("created_at >= ?", 6.months.ago.at_beginning_of_month).sort_by.sort_by {|obj| obj.created_at}
+        @latest_books = Book.where("created_at >= ?", 6.months.ago.at_beginning_of_month).sort_by {|obj| obj[:created_at]}.reverse
         @latest_books.reverse!
         @latest_books[0, limit ? [@latest_books.size, 5].min : @latest_books.size] 
     end

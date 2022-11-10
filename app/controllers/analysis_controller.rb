@@ -21,7 +21,7 @@ class AnalysisController < ApplicationController
         @top_checkout_books_group.each { |key,value| 
             @top_checkout_books.push({name: Book.find(key).title, count: value})
         }
-        @top_checkout_books = @top_checkout_books.sort_by {|obj| obj.count}
+        @top_checkout_books = @top_checkout_books.sort_by {|obj| obj[:count]}.reverse
         @top_checkout_books = @top_checkout_books[0, [@top_checkout_books.size, 5].min]
 
         # wishlist books
@@ -39,7 +39,7 @@ class AnalysisController < ApplicationController
         @top_wishlist_books_group.each { |key,value| 
             @top_wishlist_books.push({name: Book.find(key).title, count: value})
         }
-        @top_wishlist_books = @top_wishlist_books.sort_by {|obj| obj.count}
+        @top_wishlist_books = @top_wishlist_books.sort_by {|obj| obj[:count]}.reverse
         @top_wishlist_books = @top_wishlist_books[0, [@top_wishlist_books.size, 5].min]
          
         # group checkout book and wishlist book
@@ -55,7 +55,7 @@ class AnalysisController < ApplicationController
         @recommended_books_group.each do |book_id, count|
             @top_recommended_books.push({name: Book.find(book_id).title, count: count})
         end 
-        @top_recommended_books = @top_recommended_books.sort_by { |book| book.count }
+        @top_recommended_books = @top_recommended_books.sort_by { |book| book[:count] }.reverse
         @top_recommended_books = @top_recommended_books[0, [@top_recommended_books.size, 5].min]
        
         #rated books
@@ -64,9 +64,9 @@ class AnalysisController < ApplicationController
 
         @top_rated_books = []
         @rated_books_rating_avg.each do |book_id, rating|
-            @top_rated_books.push({name: Book.find(book_id).title, rating: rating})
+            @top_rated_books.push({name: Book.find(book_id).title, rating: rating.round(2) })
         end 
-        @top_rated_books = @top_rated_books.sort_by { |book| book.count }
+        @top_rated_books = @top_rated_books.sort_by { |obj| obj[:rating] }.reverse
         @top_rated_books = @top_rated_books[0, [@top_rated_books.size, 5].min]
 
 
@@ -85,7 +85,7 @@ class AnalysisController < ApplicationController
         @top_checkout_users_group.each { |key,value| 
             @top_checkout_users.push({name: User.find(key).full_name, count: value})
         }
-        @top_checkout_users = @top_checkout_users.sort_by {|obj| obj.count}
+        @top_checkout_users = @top_checkout_users.sort_by {|a| a[:count]}.reverse
         @top_checkout_users = @top_checkout_users[0, [@top_checkout_users.size, 5].min]
         
         # wishlist books
@@ -103,7 +103,7 @@ class AnalysisController < ApplicationController
         @top_wishlist_users_group.each { |key,value| 
             @top_wishlist_users.push({name: User.find(key).full_name, count: value})
         }
-        @top_wishlist_users = @top_wishlist_users.sort_by {|obj| obj.count}
+        @top_wishlist_users = @top_wishlist_users.sort_by {|obj| obj[:count]}.reverse
         @top_wishlist_users = @top_wishlist_users[0, [@top_wishlist_users.size, 5].min]
          
         # group checkout book and wishlist book
