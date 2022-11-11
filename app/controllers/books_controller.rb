@@ -87,14 +87,12 @@ class BooksController < ApplicationController
         elsif filter == "most-recommended"
             @title = "Most Recommended Books"
             @books = recommended_books(false)
-        elsif filter == 'latest'
+        elsif filter == "latest"
             @title = "Most Latest Books"
             @books = latest_books(false)
         else 
             @books= Book.all
         end
-
-        @books = Book.all
     end
 
     def create
@@ -236,7 +234,6 @@ class BooksController < ApplicationController
 
     def latest_books(limit)
         @latest_books = Book.where("created_at >= ?", 6.months.ago.at_beginning_of_month).sort_by {|obj| obj[:created_at]}.reverse
-        @latest_books.reverse!
         @latest_books[0, limit ? [@latest_books.size, 5].min : @latest_books.size] 
     end
 end
